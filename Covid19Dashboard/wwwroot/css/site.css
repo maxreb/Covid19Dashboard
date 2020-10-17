@@ -81,7 +81,7 @@ a {
 p, h1 {
 	width: 100%;
 	text-align: center;
-	margin: 0.5rem;
+	margin: .5rem 0
 }
 
 #blazor-error-ui {
