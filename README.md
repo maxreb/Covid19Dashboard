@@ -1,5 +1,5 @@
 # Covid19 RKI Dashboard
-An Covid-19 RKI Dashboard for German Cities
+A very simple Covid-19 Dashboard for German Cities using data from the Robert Koch Institut 
 
 # Demo
 
