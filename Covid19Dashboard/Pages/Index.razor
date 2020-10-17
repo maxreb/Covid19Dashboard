@@ -1,0 +1,54 @@
+﻿@page "/"
+@page "/{city}"
+<h1 style="margin-bottom: 0">Covid19 Dashboard</h1>
+
+<MatAutocompleteList Items="cities" Style="height:100px!important;" Label="Stadt" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
+</MatAutocompleteList>
+@if (data != null)
+{
+	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps">@data.District</p>
+	<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
+	<MatRipple Color="@MatRippleColor.Secondary">
+		<p style="font-size: 150px; font-weight: 800; color: @colorRki">@Math.Round(data.Cases7Per100k, 1)</p>
+	</MatRipple>
+	<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
+	<MatRipple Color="@MatRippleColor.Secondary">
+		<p style="font-size: 100px; font-weight: 600">@data.Cases</p>
+	</MatRipple>
+	<MatRipple Color="@MatRippleColor.Secondary">
+		<table class="last-table">
+
+			<tr>
+				<th>Fälle/100k Einwohner</th>
+				<th>Tote (Gesamt)</th>
+
+			</tr>
+
+			<tr style="text-align: center">
+				<td>@Math.Round(data.CasesPer100k, 1)</td>
+				<td>@data.TotalDeath</td>
+			</tr>
+			<tr>
+				<th>Betroffenenrate</th>
+				<th>Sterberate</th>
+			</tr>
+			<tr style="text-align: center">
+				<td>@Math.Round(data.CasesPerPopulation, 1)%</td>
+				<td>@Math.Round(data.DeathRate, 1)%</td>
+			</tr>
+
+		</table>
+	</MatRipple>
+	<div style="height:80px"></div>
+	<div class="footer">
+		Stand: @data.LastUpdate<br />
+		Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
+		(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a>
+	</div>
+
+}
+@*@if (showSpinner)
+	{
+		<Flow Center="true" style="margin-top: 3rem;" Color="@MatThemeColors.Orange._500.Value" />
+	}*@
+

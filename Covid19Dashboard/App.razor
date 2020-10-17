@@ -1,0 +1,26 @@
+﻿<MatToastContainer />
+<MatThemeProvider Theme="@theme1">
+	<Router AppAssembly="@typeof(Program).Assembly">
+		<Found Context="routeData">
+			<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+		</Found>
+		<NotFound>
+			<LayoutView Layout="@typeof(MainLayout)">
+				<p>Sorry, there's nothing at this address.</p>
+			</LayoutView>
+		</NotFound>
+	</Router>
+</MatThemeProvider>
+
+@code
+        {
+
+	MatTheme theme1 = new MatTheme()
+	{
+		Primary = MatThemeColors.Orange._500.Value,
+		Secondary = MatThemeColors.BlueGrey._500.Value,
+		Background = "#1D2224"
+	};
+
+
+}
