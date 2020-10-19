@@ -6,14 +6,38 @@
 </MatAutocompleteList>
 @if (data != null)
 {
-	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps">@data.District</p>
+	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">@data.District</p>
 	<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
-	<MatRipple Color="@MatRippleColor.Secondary">
+	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
+		@if (dataYesterday != null)
+		{
+			<div style="width:100%"></div>
+		}
 		<p style="font-size: 150px; font-weight: 800; color: @colorRki">@Math.Round(data.Cases7Per100k, 1)</p>
+		@if (dataYesterday != null)
+		{
+			var x = CompareToStringAndColor(data.Cases7Per100k, dataYesterday.Cases7Per100k);
+			var tooltip = "Gestern: " + Math.Round(dataYesterday.Cases7Per100k, 1);
+			<MatTooltip Tooltip=@tooltip>
+				<MatIcon RefBack="@context" Style="@x.style" Icon="@x.icon" />
+			</MatTooltip>
+		}
 	</MatRipple>
 	<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
-	<MatRipple Color="@MatRippleColor.Secondary">
+	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
+		@if (dataYesterday != null)
+		{
+			<div style="width:100%"></div>
+		}
 		<p style="font-size: 100px; font-weight: 600">@data.Cases</p>
+		@if (dataYesterday != null)
+		{
+			var tooltip = "Gestern: " + dataYesterday.Cases;
+			<MatTooltip Tooltip=@tooltip>
+				<p @ref="@context.Current" style="color: #ff9800">@(data.Cases > dataYesterday.Cases ? "+" : "") @(data.Cases - dataYesterday.Cases)</p>
+			</MatTooltip>
+		}
+
 	</MatRipple>
 	<MatRipple Color="@MatRippleColor.Secondary">
 		<table class="last-table">
@@ -41,7 +65,7 @@
 	</MatRipple>
 	<div style="height:80px"></div>
 	<div class="footer">
-		Stand: @data.LastUpdate<br />
+		Stand: @data.LastUpdate.ToString("dd.MM.yyyy HH:mm")<br />
 		Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
 		(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a>
 	</div>

@@ -23,6 +23,9 @@ namespace Covid19Dashboard
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
 					webBuilder.UseStartup<Startup>();
-				});
+				})
+			.ConfigureAppConfiguration((hostContext, app) => app.AddEnvironmentVariables("REBLE_"))
+			.ConfigureLogging(x => x.AddConsole(configure => configure.TimestampFormat = "yy-MM-dd HH:mm:ss"))
+			;
 	}
 }

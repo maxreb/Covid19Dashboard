@@ -2,6 +2,7 @@
 using Covid19Dashboard.Entities;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] CitiesGermany CitiesGermany { get; set; } = default!;
 		[Inject] IMatToaster Toaster { get; set; } = default!;
 		private ICovid19Data? data;
+		private ICovid19Data? dataYesterday;
 
 		//bool showSpinner = false;
 		string colorRki = "#000";
@@ -33,13 +35,13 @@ namespace Covid19Dashboard.Pages
 		}
 		bool shouldRender = true;
 		protected override bool ShouldRender() => shouldRender;
-		
+
 		protected async override Task OnInitializedAsync()
 		{
 			cities = CitiesGermany.CitiesToKeys.Keys;
 			await Update();
 		}
-		
+
 		private string city = "Kiel";
 
 
@@ -54,6 +56,16 @@ namespace Covid19Dashboard.Pages
 			});
 		}
 
+
+		private (string icon, string style) CompareToStringAndColor(double a, double b)
+		{
+			string style = "width:100%;color:";
+			if (a > b)
+				return ("arrow_upward", style + "#f00");
+			else if (a == b)
+				return ("indeterminate_check_box", style + "#fff");
+			return ("arrow_downward", style + "#0f0");
+		}
 
 
 		private async Task Update()
@@ -72,8 +84,10 @@ namespace Covid19Dashboard.Pages
 					{
 						Toaster.Add($"Keine Daten für die Stadt {City}", MatToastType.Warning);
 					}
+
 					else
 					{
+						CovidApi.TryGetFromCityKey(key, DateTime.Now.AddDays(-1), out dataYesterday);
 						colorRki = data.Cases7Per100k switch
 						{
 							var x when x == 0 => "#fff",

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +35,7 @@ namespace Covid19Dashboard
 
 			services.AddSingleton<ICovidApi, ArcgisService>();
 			services.AddSingleton<CitiesGermany>();
+			
 
 			services.AddMatToaster(config =>
 			{

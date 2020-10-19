@@ -10,7 +10,7 @@ namespace Covid19Dashboard.Data
 	{
 		//CSV File from:
 		//https://github.com/andrena/java8-workshop/blob/master/demos/Liste-Staedte-in-Deutschland.csv
-		const string CSVFile = "Data/cities-germany.csv";
+		const string CSVFile = "data/cities-germany.csv";
 		public Dictionary<string, string> _citiesToKeys;
 		public IReadOnlyDictionary<string, string> CitiesToKeys => _citiesToKeys;
 
