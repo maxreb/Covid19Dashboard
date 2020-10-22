@@ -87,7 +87,7 @@ namespace Covid19Dashboard.Pages
 
 					else
 					{
-						CovidApi.TryGetFromCityKey(key, DateTime.Now.AddDays(-1), out dataYesterday);
+						CovidApi.TryGetFromCityKey(key, 1, out dataYesterday);
 						colorRki = data.Cases7Per100k switch
 						{
 							var x when x == 0 => "#fff",

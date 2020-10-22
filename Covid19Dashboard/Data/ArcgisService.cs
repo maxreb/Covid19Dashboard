@@ -68,9 +68,9 @@ namespace Covid19Dashboard.Data
 			//return currentDataSet?.Features.FirstOrDefault(x => x.Attributes.CityKey == key)?.Attributes;
 		}
 
-		public bool TryGetFromCityKey(string key, DateTime date, out ICovid19Data? data)
+		public bool TryGetFromCityKey(string key, uint daysBeforeLastSet, out ICovid19Data? data)
 		{
-			if (_pastData.TryGetValue(date.Date, out ArcgisData? arc) && arc != null)
+			if (_pastData.TryGetValue(lastUpdate.AddDays(daysBeforeLastSet * -1), out ArcgisData? arc) && arc != null)
 			{
 				data = arc.Features.FirstOrDefault(x => x.Attributes.CityKey == key)?.Attributes;
 				return data != null;
