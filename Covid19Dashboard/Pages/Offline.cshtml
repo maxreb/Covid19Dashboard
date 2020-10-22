@@ -1,0 +1,63 @@
+﻿@page "/Offline"
+
+
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Max Rebles Covid19 Dashboard</title>
+		<base href="~/" />
+		<link href="/css/site.css" rel="stylesheet" />
+		<link rel="manifest" href="manifest.json" />
+
+		<link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
+
+	</head>
+	<body>
+		<app>
+			<h1 style="margin-bottom: 0">Covid19 Dashboard</h1>
+
+			<input class="mat-text-field-input mdc-text-field__input mat-hide-clearbutton" value="Offline" />
+
+			<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">OFFLINE</p>
+			<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
+
+			<p style="font-size: 150px; font-weight: 800; color: #fff">-</p>
+
+			<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
+
+			<p style="font-size: 100px; font-weight: 600">-</p>
+
+
+			<table class="last-table">
+
+				<tr>
+					<th>Fälle/100k Einwohner</th>
+					<th>Tote (Gesamt)</th>
+
+				</tr>
+
+				<tr style="text-align: center">
+					<td>-</td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<th>Betroffenenrate</th>
+					<th>Sterberate</th>
+				</tr>
+				<tr style="text-align: center">
+					<td>-%</td>
+					<td>-%</td>
+				</tr>
+
+			</table>
+			<div style="height:80px"></div>
+			<div class="footer">
+				Stand: Offline<br />
+				Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
+				(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a>
+			</div>
+		</app>
+	</body>
+</html>

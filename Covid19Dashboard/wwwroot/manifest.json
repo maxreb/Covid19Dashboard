@@ -1,0 +1,24 @@
+{
+	"dir": "ltr",
+	"lang": "en",
+	"name": "Max Rebles Covid19 Dashboard",
+	"short_name": "Covid19 Dashboard",
+	"scope": "/",
+	"display": "minimal-ui",
+	"start_url": "https://covid19.reble.eu/",
+	"background_color": "#1D2224",
+	"theme_color": "#ff9800",
+	"description": "",
+	"orientation": "portrait",
+	"related_applications": [],
+	"prefer_related_applications": false,
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "144x144",
+			"type": "image/png"
+		}
+	],
+	"url": "https://covid19.reble.eu",
+	"screenshots": []
+}

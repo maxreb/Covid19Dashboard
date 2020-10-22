@@ -23,4 +23,8 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\serviceWorker1\" />
+  </ItemGroup>
 </Project>
