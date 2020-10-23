@@ -1,19 +1,17 @@
 ﻿using Covid19Dashboard.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Threading;
-using Microsoft.Extensions.Logging;
-using System.IO;
-using System.Net;
-using Microsoft.AspNetCore.Components.Forms;
+using System.Threading.Tasks;
 
-namespace Covid19Dashboard.Data
+namespace Covid19Dashboard.Services
 {
-	public sealed class ArcgisService : ICovidApi, IDisposable
+	public sealed class ArcgisService : ICovidApiService, IDisposable
 	{
 		const string databasePath = "data/arcgis/";
 		const string query = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=cases7_per_100k,last_update,cases,GEN,rs,cases_per_100k,death_rate,deaths,cases_per_population&returnGeometry=false&outSR=4326&f=json";

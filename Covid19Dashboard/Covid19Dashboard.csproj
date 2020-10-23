@@ -7,24 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="data\cities-germany.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Compile Remove="data\**" />
+    <Content Remove="data\**" />
+    <EmbeddedResource Remove="data\**" />
+    <None Remove="data\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BlazorPro.Spinkit" Version="1.2.0" />
     <PackageReference Include="MatBlazor" Version="2.7.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="data\arcgis\*.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\serviceWorker1\" />
   </ItemGroup>
 </Project>
