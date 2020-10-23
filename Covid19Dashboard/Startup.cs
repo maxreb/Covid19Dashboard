@@ -1,17 +1,10 @@
-
-using Covid19Dashboard.Data;
+using Covid19Dashboard.Services;
 using MatBlazor;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Covid19Dashboard
 {
@@ -33,9 +26,7 @@ namespace Covid19Dashboard
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
 
-			services.AddSingleton<ICovidApi, ArcgisService>();
-			services.AddSingleton<CitiesGermany>();
-			
+			services.AddSingleton<ICovidApiService, ArcgisService>();
 
 			services.AddMatToaster(config =>
 			{

@@ -1,11 +1,9 @@
 ﻿using Covid19Dashboard.Entities;
-using System;
-using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Covid19Dashboard.Data
+namespace Covid19Dashboard.Services
 {
-	public interface ICovidApi
+	public interface ICovidApiService
 	{
 		ValueTask<ICovid19Data?> GetFromDistrictName(string name);
 		ValueTask<ICovid19Data?> GetFromCityKey(string key);

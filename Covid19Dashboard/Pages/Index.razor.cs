@@ -1,20 +1,17 @@
-﻿using Covid19Dashboard.Data;
-using Covid19Dashboard.Entities;
+﻿using Covid19Dashboard.Entities;
+using Covid19Dashboard.Services;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace Covid19Dashboard.Pages
 {
 	public partial class Index
 	{
-		[Inject] ICovidApi CovidApi { get; set; } = default!;
-		[Inject] CitiesGermany CitiesGermany { get; set; } = default!;
+		[Inject] ICovidApiService CovidApi { get; set; } = default!;
 		[Inject] IMatToaster Toaster { get; set; } = default!;
 		private ICovid19Data? data;
 		private ICovid19Data? dataYesterday;
@@ -38,7 +35,7 @@ namespace Covid19Dashboard.Pages
 
 		protected async override Task OnInitializedAsync()
 		{
-			cities = CitiesGermany.CitiesToKeys.Keys;
+			cities = CitiesRepository.CitiesToKeys.Keys;
 			await Update();
 		}
 
@@ -77,7 +74,7 @@ namespace Covid19Dashboard.Pages
 				if (string.IsNullOrEmpty(City) || City.Length < 3)
 					return;
 
-				if (CitiesGermany.CitiesToKeys.TryGetValue(City, out string? key) && key != null)
+				if (CitiesRepository.CitiesToKeys.TryGetValue(City, out string? key) && key != null)
 				{
 					data = await CovidApi.GetFromCityKey(key);
 					if (data == null)
