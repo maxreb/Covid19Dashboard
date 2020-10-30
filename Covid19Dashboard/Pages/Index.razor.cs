@@ -28,8 +28,8 @@ namespace Covid19Dashboard.Pages
 		private ICovid19Data? data;
 		private ICovid19Data? dataYesterday;
 
-		private LineConfig chart7Config;
-		private LineConfig chartTConfig;
+		private readonly LineConfig chart7Config;
+		private readonly LineConfig chartTConfig;
 
 		string colorRki = "#000";
 		IEnumerable<string> cities = Enumerable.Empty<string>();
@@ -47,12 +47,14 @@ namespace Covid19Dashboard.Pages
 		bool shouldRender = true;
 		protected override bool ShouldRender() => shouldRender;
 
-
+		public Index()
+		{
+			chart7Config = CreateConfig();
+			chartTConfig = CreateConfig();
+		}
 		protected async override Task OnInitializedAsync()
 		{
 			cities = CitiesRepository.CitiesToKeys.Keys;
-			chart7Config = CreateConfig();
-			chartTConfig = CreateConfig();
 			await Update();
 		}
 

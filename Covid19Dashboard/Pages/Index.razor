@@ -7,14 +7,16 @@
 <h1 style="margin-bottom: 0">Covid19 Dashboard</h1>
 
 
-<MatAutocompleteList Items="cities" Style="height:100px!important;" Label="Stadt" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
+<MatAutocompleteList Items="cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
 </MatAutocompleteList>
 @if (data != null)
 {
 	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">@data.District</p>
 	<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
-	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
-		<ChartJsLineChart Config="@chart7Config" Height="150"></ChartJsLineChart>
+	<MatRipple Color="@MatRippleColor.Secondary" Style="		display: flex;
+		height: 200px; flex-direction: row;
+		align-items: center">
+		<ChartJsLineChart Config="@chart7Config" Height="140"></ChartJsLineChart>
 		@if (dataYesterday != null)
 		{
 			<div style="width:100%"></div>
@@ -25,13 +27,13 @@
 			var x = CompareToStringAndColor(data.Cases7Per100k, dataYesterday.Cases7Per100k);
 			var tooltip = "Gestern: " + Math.Round(dataYesterday.Cases7Per100k, 1);
 			<MatTooltip Tooltip=@tooltip>
-				<MatIcon RefBack="@context" Style="@x.style" Icon="@x.icon" />
+				<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
 			</MatTooltip>
 		}
 	</MatRipple>
 	<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
-	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
-		<ChartJsLineChart Config="@chartTConfig" Height="100"></ChartJsLineChart>
+	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; height:200px; flex-direction: row; align-items:center">
+		<ChartJsLineChart Config="@chartTConfig" Height="140"></ChartJsLineChart>
 		@if (dataYesterday != null)
 		{
 			<div style="width:100%"></div>
@@ -41,7 +43,7 @@
 		{
 			var tooltip = "Gestern: " + dataYesterday.Cases;
 			<MatTooltip Tooltip=@tooltip>
-				<p @ref="@context.Current" style="color: #ff9800">@(data.Cases > dataYesterday.Cases ? "+" : "") @(data.Cases - dataYesterday.Cases)</p>
+				<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(data.Cases > dataYesterday.Cases ? "+" : "") @(data.Cases - dataYesterday.Cases)</p>
 			</MatTooltip>
 		}
 

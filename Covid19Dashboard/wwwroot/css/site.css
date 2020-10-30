@@ -50,8 +50,18 @@ a {
 	color: #ff9800 !important;
 }
 
+.foreground {
+	z-index: 10;
+}
+
+.mdc-icon-button .material-icons {
+	color: #ff9800;
+	text-shadow: 0 0 3px #000;
+}
+
 .mat-text-field {
-	height: 90% !important;
+	align-items: center !important;
+	/*height: 90px !important;*/
 }
 
 .mat-text-field-input {
@@ -61,14 +71,17 @@ a {
 	color: #fff !important;
 	height: 55px !important;
 	font-size: 33px !important;
-	margin-top: 2rem;
 }
 
-.mdc-floating-label:not(:focus) {
-	left: 47% !important;
-	margin-top: 10px;
+.mdc-floating-label--float-above {
+	/*left: 46.5% !important;*/
+	transform: translateY(-135%) scale(0.75) !important;
 }
 
+.mat-autocomplete-list-wrapper {
+	z-index: 20;
+	margin-top: 1rem;
+}
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
 	color: #fff !important;
@@ -90,6 +103,8 @@ p, h1 {
 	width: 100%;
 	margin-top: 1rem;
 }
+
+
 #blazor-error-ui {
 	background: lightyellow;
 	bottom: 0;
