@@ -27,7 +27,7 @@ tr {
 }
 
 .last-table {
-	width:100%;
+	width: 100%;
 }
 
 .content {
@@ -84,6 +84,12 @@ p, h1 {
 	margin: .5rem 0
 }
 
+.mdc-ripple-surface .row {
+	position: absolute;
+	opacity: 0.3;
+	width: 100%;
+	margin-top: 1rem;
+}
 #blazor-error-ui {
 	background: lightyellow;
 	bottom: 0;

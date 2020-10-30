@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,6 +68,7 @@ namespace Covid19Dashboard.Services
 			//return currentDataSet?.Features.FirstOrDefault(x => x.Attributes.CityKey == key)?.Attributes;
 		}
 
+		//TODO: make this as an array so we can get the last X days
 		public bool TryGetFromCityKey(string key, uint daysBeforeLastSet, out ICovid19Data? data)
 		{
 			if (_pastData.TryGetValue(lastUpdate.AddDays(daysBeforeLastSet * -1), out ArcgisData? arc) && arc != null)
@@ -135,8 +138,21 @@ namespace Covid19Dashboard.Services
 				if (temp.LastUpdate > lastUpdate)
 				{
 					_logger.LogInformation("New updated arrived");
-					lastUpdate = temp.LastUpdate;
 					var json = await QueryJson(queryAll);
+					using (var hash = SHA256.Create())
+					{
+						//This is because sometimes there could be a new date,
+						//but the data passed to us is the same as the data from yesterday...
+						//Even the RKI is not perfect all the time...
+						var jsonFromYesterday = File.ReadAllText(Path.Combine(databasePath, lastUpdate.ToString("yyyyMMdd") + ".json"));
+						if (hash.ComputeHash(Encoding.UTF8.GetBytes(json)) ==
+							hash.ComputeHash(Encoding.UTF8.GetBytes(jsonFromYesterday)))
+						{
+							_logger.LogInformation("Dataset from today is the same as yesterday --> Skip this dataset");
+							return;
+						}
+					}
+					lastUpdate = temp.LastUpdate;
 					currentDataSet = JsonSerializer.Deserialize<ArcgisData>(json);
 					_pastData[lastUpdate] = currentDataSet;
 					File.WriteAllText(Path.Combine(databasePath, lastUpdate.ToString("yyyyMMdd") + ".json"), json);

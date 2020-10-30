@@ -1,6 +1,11 @@
-﻿@page "/"
+﻿@using ChartJs.Blazor.Charts
+@using ChartJs.Blazor.ChartJS.LineChart
+@using ChartJs.Blazor.ChartJS.Common.Properties
+@using ChartJs.Blazor.Util
+@page "/"
 @page "/{city}"
 <h1 style="margin-bottom: 0">Covid19 Dashboard</h1>
+
 
 <MatAutocompleteList Items="cities" Style="height:100px!important;" Label="Stadt" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
 </MatAutocompleteList>
@@ -9,6 +14,7 @@
 	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">@data.District</p>
 	<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
 	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
+		<ChartJsLineChart Config="@chart7Config" Height="150"></ChartJsLineChart>
 		@if (dataYesterday != null)
 		{
 			<div style="width:100%"></div>
@@ -25,6 +31,7 @@
 	</MatRipple>
 	<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
 	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; flex-direction: row; align-items:center">
+		<ChartJsLineChart Config="@chartTConfig" Height="100"></ChartJsLineChart>
 		@if (dataYesterday != null)
 		{
 			<div style="width:100%"></div>
@@ -57,8 +64,8 @@
 				<th>Sterberate</th>
 			</tr>
 			<tr style="text-align: center">
-				<td>@Math.Round(data.CasesPerPopulation, 1)%</td>
-				<td>@Math.Round(data.DeathRate, 1)%</td>
+				<td>@Math.Round(data.CasesPerPopulation, 2)%</td>
+				<td>@Math.Round(data.DeathRate, 2)%</td>
 			</tr>
 
 		</table>
