@@ -99,7 +99,7 @@ p, h1 {
 
 .mdc-ripple-surface .row {
 	position: absolute;
-	opacity: 0.3;
+	mix-blend-mode: color-dodge;
 	width: 100%;
 	margin-top: 1rem;
 }

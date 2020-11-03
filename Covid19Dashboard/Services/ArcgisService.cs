@@ -26,7 +26,7 @@ namespace Covid19Dashboard.Services
 		private readonly HttpClient _http;
 		private readonly Timer _timer;
 		private readonly ILogger<ArcgisService> _logger;
-		private readonly Dictionary<DateTime, ArcgisData> _pastData;
+		private readonly SortedDictionary<DateTime, ArcgisData> _pastData;
 
 		private ArcgisData? currentDataSet;
 		DateTime lastUpdate;
@@ -37,7 +37,7 @@ namespace Covid19Dashboard.Services
 		{
 			_http = http.CreateClient();
 			_logger = logger;
-			_pastData = new Dictionary<DateTime, ArcgisData>();
+			_pastData = new SortedDictionary<DateTime, ArcgisData>();
 			ReadDatabase();
 			_timer = new Timer(CheckForNewData, null, TimeSpan.FromSeconds(0), TimeSpan.FromMinutes(30));
 		}
@@ -65,19 +65,21 @@ namespace Covid19Dashboard.Services
 		{
 			var url = string.Format(cityKeyQuery, key);
 			return Query(url);
-			//return currentDataSet?.Features.FirstOrDefault(x => x.Attributes.CityKey == key)?.Attributes;
 		}
 
-		//TODO: make this as an array so we can get the last X days
-		public bool TryGetFromCityKey(string key, uint daysBeforeLastSet, out ICovid19Data? data)
+		public bool TryGetFromCityKey(string key, DateTime from, out IEnumerable<ICovid19Data> data, DateTime? to = null)
 		{
-			if (_pastData.TryGetValue(lastUpdate.AddDays(daysBeforeLastSet * -1), out ArcgisData? arc) && arc != null)
+			to ??= lastUpdate;
+			if (!(currentDataSet?.Features.Any(t => t.Attributes.CityKey == key) ?? false))
 			{
-				data = arc.Features.FirstOrDefault(x => x.Attributes.CityKey == key)?.Attributes;
-				return data != null;
+				data = Enumerable.Empty<ICovid19Data>();
+				return false;
 			}
-			data = null;
-			return false;
+			data = _pastData
+				.Where(x => x.Key >= from && x.Key <= to)
+				.Select(x => (ICovid19Data?)x.Value.Features.FirstOrDefault(t => t.Attributes.CityKey == key)?.Attributes)
+				.OfType<ICovid19Data>();
+			return data.Any();
 		}
 
 
@@ -162,9 +164,7 @@ namespace Covid19Dashboard.Services
 			catch (Exception e)
 			{
 				_logger.LogError(e, "CheckForNewData");
-				throw;
 			}
-
 		}
 
 		private async Task<ICovid19Data?> Query(string url)

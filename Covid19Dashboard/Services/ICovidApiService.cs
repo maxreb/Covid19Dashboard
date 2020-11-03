@@ -1,4 +1,6 @@
 ﻿using Covid19Dashboard.Entities;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Covid19Dashboard.Services
@@ -14,6 +16,6 @@ namespace Covid19Dashboard.Services
 		/// <param name="daysBeforeLastSet">Days before last data set (0: Today, 1: Yesterday, ...)</param>
 		/// <param name="data">On success: the data return</param>
 		/// <returns></returns>
-		bool TryGetFromCityKey(string key, uint daysBeforeLastSet, out ICovid19Data? data);
+		bool TryGetFromCityKey(string key, DateTime from, out IEnumerable<ICovid19Data> data, DateTime? to = null);
 	}
 }

@@ -1,4 +1,4 @@
-﻿@using ChartJs.Blazor.Charts
+﻿@using Covid19Dashboard.Components
 @using ChartJs.Blazor.ChartJS.LineChart
 @using ChartJs.Blazor.ChartJS.Common.Properties
 @using ChartJs.Blazor.Util
@@ -9,45 +9,47 @@
 
 <MatAutocompleteList Items="cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
 </MatAutocompleteList>
-@if (data != null)
+@if (Succeeded && DatasetCurrent != null)
 {
-	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">@data.District</p>
-	<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
-	<MatRipple Color="@MatRippleColor.Secondary" Style="		display: flex;
-		height: 200px; flex-direction: row;
-		align-items: center">
-		<ChartJsLineChart Config="@chart7Config" Height="140"></ChartJsLineChart>
-		@if (dataYesterday != null)
-		{
-			<div style="width:100%"></div>
-		}
-		<p style="font-size: 150px; font-weight: 800; color: @colorRki">@Math.Round(data.Cases7Per100k, 1)</p>
-		@if (dataYesterday != null)
-		{
-			var x = CompareToStringAndColor(data.Cases7Per100k, dataYesterday.Cases7Per100k);
-			var tooltip = "Gestern: " + Math.Round(dataYesterday.Cases7Per100k, 1);
-			<MatTooltip Tooltip=@tooltip>
-				<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
-			</MatTooltip>
-		}
-	</MatRipple>
-	<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
-	<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; height:200px; flex-direction: row; align-items:center">
-		<ChartJsLineChart Config="@chartTConfig" Height="140"></ChartJsLineChart>
-		@if (dataYesterday != null)
-		{
-			<div style="width:100%"></div>
-		}
-		<p style="font-size: 100px; font-weight: 600">@data.Cases</p>
-		@if (dataYesterday != null)
-		{
-			var tooltip = "Gestern: " + dataYesterday.Cases;
-			<MatTooltip Tooltip=@tooltip>
-				<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(data.Cases > dataYesterday.Cases ? "+" : "") @(data.Cases - dataYesterday.Cases)</p>
-			</MatTooltip>
-		}
+	<p style="margin-bottom:30px; margin-top: 0; font-variant-caps:all-small-caps;">@DatasetCurrent.District</p>
+	<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
+	<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
+	@*<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">Inzidenz (7 Tage / 100.000 Einwohner)</p>
+		<MatRipple Color="@MatRippleColor.Secondary" Style="		display: flex;
+			height: 200px; flex-direction: row;
+			align-items: center">
+			<ChartJsLineChart Config="@chart7Config" Height="140"></ChartJsLineChart>
+			@if (dataYesterday != null)
+			{
+				<div style="width:100%"></div>
+			}
+			<p style="font-size: 150px; font-weight: 800; color: @colorRki">@Math.Round(data.Cases7Per100k, 1)</p>
+			@if (dataYesterday != null)
+			{
+				var x = CompareToStringAndColor(data.Cases7Per100k, dataYesterday.Cases7Per100k);
+				var tooltip = "Gestern: " + Math.Round(dataYesterday.Cases7Per100k, 1);
+				<MatTooltip Tooltip=@tooltip>
+					<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
+				</MatTooltip>
+			}
+		</MatRipple>
+		<p style="margin-bottom: -23px;font-weight: bold">Fälle gesamt</p>
+		<MatRipple Color="@MatRippleColor.Secondary" Style="display: flex; height:200px; flex-direction: row; align-items:center">
+			<ChartJsLineChart Config="@chartTConfig" Height="140"></ChartJsLineChart>
+			@if (dataYesterday != null)
+			{
+				<div style="width:100%"></div>
+			}
+			<p style="font-size: 100px; font-weight: 600">@data.Cases</p>
+			@if (dataYesterday != null)
+			{
+				var tooltip = "Gestern: " + dataYesterday.Cases;
+				<MatTooltip Tooltip=@tooltip>
+					<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(data.Cases > dataYesterday.Cases ? "+" : "") @(data.Cases - dataYesterday.Cases)</p>
+				</MatTooltip>
+			}
 
-	</MatRipple>
+		</MatRipple>*@
 	<MatRipple Color="@MatRippleColor.Secondary">
 		<table class="last-table">
 
@@ -58,23 +60,23 @@
 			</tr>
 
 			<tr style="text-align: center">
-				<td>@Math.Round(data.CasesPer100k, 1)</td>
-				<td>@data.TotalDeath</td>
+				<td>@Math.Round(DatasetCurrent.CasesPer100k, 1)</td>
+				<td>@DatasetCurrent.TotalDeath</td>
 			</tr>
 			<tr>
 				<th>Betroffenenrate</th>
 				<th>Sterberate</th>
 			</tr>
 			<tr style="text-align: center">
-				<td>@Math.Round(data.CasesPerPopulation, 2)%</td>
-				<td>@Math.Round(data.DeathRate, 2)%</td>
+				<td>@Math.Round(DatasetCurrent.CasesPerPopulation, 2)%</td>
+				<td>@Math.Round(DatasetCurrent.DeathRate, 2)%</td>
 			</tr>
 
 		</table>
 	</MatRipple>
 	<div style="height:80px"></div>
 	<div class="footer">
-		Stand: @data.LastUpdate.ToString("dd.MM.yyyy HH:mm")<br />
+		Stand: @DatasetCurrent.LastUpdate.ToString("dd.MM.yyyy HH:mm")<br />
 		Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
 		(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a>
 	</div>
