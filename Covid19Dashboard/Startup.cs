@@ -30,11 +30,12 @@ namespace Covid19Dashboard
 
 			services.AddMatToaster(config =>
 			{
-				config.Position = MatToastPosition.BottomRight;
+				config.Position = MatToastPosition.BottomFullWidth;
 				config.PreventDuplicates = true;
 				config.NewestOnTop = true;
 				config.ShowCloseButton = true;
-				config.MaximumOpacity = 95;
+				config.MaximumOpacity = 100;
+				config.RequireInteraction = true;
 				config.VisibleStateDuration = 3000;
 			});
 

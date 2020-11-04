@@ -15,7 +15,7 @@ namespace Covid19Dashboard.Pages
 	{
 		[Inject] ICovidApiService CovidApi { get; set; } = default!;
 		[Inject] IMatToaster Toaster { get; set; } = default!;
-		[Inject] ILogger<Index> Logger { get; set; }
+		[Inject] ILogger<Index> Logger { get; set; } = default!;
 		[Parameter]
 		public string? City { get; set; }
 
@@ -24,6 +24,7 @@ namespace Covid19Dashboard.Pages
 		private string TextStyle7 => "font-size: 120px; font-weight: 800; color: " + colorRki;
 		private bool Succeeded { get; set; }
 		private ICovid19Data? DatasetCurrent { get; set; }
+		private bool DataUpToDate { get; set; }
 
 
 		string colorRki = "#000";
@@ -66,6 +67,7 @@ namespace Covid19Dashboard.Pages
 				Data7.Clear();
 				DataTotal.Clear();
 				Succeeded = false;
+				DataUpToDate = false;
 
 				if (string.IsNullOrEmpty(City) || City.Length < 3)
 					return;
@@ -77,6 +79,7 @@ namespace Covid19Dashboard.Pages
 					{
 						Logger.LogDebug($"Received data for city {City} ({key})");
 						DatasetCurrent = data.Last();
+						DataUpToDate = DateTime.Now.AddHours(-5).Date < DatasetCurrent.LastUpdate.Date;
 						Data7.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases7Per100k)));
 						DataTotal.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases)));
 						colorRki = DatasetCurrent.Cases7Per100k switch
@@ -88,6 +91,11 @@ namespace Covid19Dashboard.Pages
 							var x when x >= 50 & x < 100 => "#B42B37",
 							_ => "#910B1E"
 						};
+
+						if (!DataUpToDate)
+						{
+							Toaster.Add($"Die aktuellen Covid-19 Fälle können derzeit nicht angezeigt werden. Das RKI arbeitet an der Lösung des Problems...", MatToastType.Danger, "Störung RKI");
+						}
 					}
 					else
 					{
