@@ -79,7 +79,7 @@ namespace Covid19Dashboard.Pages
 					{
 						Logger.LogDebug($"Received data for city {City} ({key})");
 						DatasetCurrent = data.Last();
-						DataUpToDate = DateTime.Now.AddHours(-5).Date < DatasetCurrent.LastUpdate.Date;
+						DataUpToDate = DateTime.Now.AddHours(-5).Date <= DatasetCurrent.LastUpdate.Date;
 						Data7.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases7Per100k)));
 						DataTotal.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases)));
 						colorRki = DatasetCurrent.Cases7Per100k switch
