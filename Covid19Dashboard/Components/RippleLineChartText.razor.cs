@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Covid19Dashboard.Components
 {
@@ -52,10 +53,21 @@ namespace Covid19Dashboard.Components
 			{
 				showTrend = false;
 			}
+			double min = Data.Min(x => x.YValue);
+			double max = Data.Max(x => x.YValue);
+			double den = 10;
+			if (min > 1000)
+				den = 100;
+			min = Math.Floor(min / den) * den;
+			max = Math.Ceiling(max / den) * den;
 
-			var min = Math.Floor(Data.Min(x => x.YValue) / 10) * 10;
 			_chartConfig.Data.Datasets.Clear();
-			((LinearCartesianAxis)_chartConfig.Options.Scales.yAxes.First()).Ticks.Min = min;
+
+			foreach (LinearCartesianAxis yAxis in _chartConfig.Options.Scales.yAxes)
+			{
+				yAxis.Ticks.Min = min;
+				yAxis.Ticks.Max = max;
+			}
 
 			var data = new LineDataset<TimeTuple<double>>(Data)
 			{
@@ -99,7 +111,15 @@ namespace Covid19Dashboard.Components
 				 },
 				 yAxes = new List<CartesianAxis> {
 							new LinearCartesianAxis {
-								Ticks = new LinearCartesianTicks{ MaxTicksLimit = 3 },
+								Position = Position.Left,
+								Ticks = new LinearCartesianTicks{ MaxTicksLimit = 2, FontColor = "#aaa" },
+								GridLines = new GridLines{
+									Display = false
+								}
+							}
+							,new LinearCartesianAxis {
+								Position = Position.Right,
+								Ticks = new LinearCartesianTicks{ MaxTicksLimit = 2, FontColor = "#aaa" },
 								GridLines = new GridLines{
 									Display = false
 								}
