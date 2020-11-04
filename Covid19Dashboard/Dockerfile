@@ -17,7 +17,7 @@ RUN dotnet publish "Covid19Dashboard.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-
+ENV TZ=Europe/Berlin
 # Enable this to copy the json data files to the build
 # COPY ["Covid19Dashboard/data/", "/app/data/"]
 
