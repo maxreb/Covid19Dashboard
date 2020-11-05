@@ -1,29 +1,30 @@
 ﻿@using ChartJs.Blazor.Charts
-
-<p style="margin-bottom: -33px; margin-top:0px; font-weight: bold">@Title</p>
-<MatRipple Color="@MatRippleColor.Secondary" Style="		display: flex;
+<div class="rlct-container">
+	<p class="rlct-title" >@Title</p>
+	<MatRipple Color="@MatRippleColor.Secondary" Style="		display: flex;
 		height: 200px; flex-direction: row;
 		align-items: center">
-	<ChartJsLineChart Config="@_chartConfig" Height="140"></ChartJsLineChart>
-	@if (showTrend)
-	{
-		<div style="width:100%"></div>
-	}
-	<p style="@TextStyle">@dataToday</p>
-	@if (showTrend)
-	{
-		var x = GetIconAndStyle(dataToday, dataYesterday);
-		var tooltip = "Gestern: " + dataYesterday;
-		<MatTooltip Tooltip=@tooltip>
-			@if (ShowTrendIcon)
-			{
-				<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
-			}
-			else if (ShowTrendNumber)
-			{
-				<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(dataToday > dataYesterday ? "+" : "") @(dataToday - dataYesterday)</p>
-			}
+		<ChartJsLineChart Config="@_chartConfig" Height="140"></ChartJsLineChart>
+		@if (showTrend)
+		{
+			<div style="width:100%"></div>
+		}
+		<p style="@TextStyle">@dataToday.ToString(System.Globalization.CultureInfo.InvariantCulture)</p>
+		@if (showTrend)
+		{
+			var x = GetIconAndStyle(dataToday, dataYesterday);
+			var tooltip = "Gestern: " + dataYesterday;
+			<MatTooltip Tooltip=@tooltip>
+				@if (ShowTrendIcon)
+				{
+					<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
+				}
+				else if (ShowTrendNumber)
+				{
+					<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(dataToday > dataYesterday ? "+" : "") @(dataToday - dataYesterday)</p>
+				}
 
-		</MatTooltip>
-	}
-</MatRipple>
+			</MatTooltip>
+		}
+	</MatRipple>
+</div>

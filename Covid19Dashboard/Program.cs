@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace Covid19Dashboard
 {
@@ -9,6 +10,8 @@ namespace Covid19Dashboard
 	{
 		public static void Main(string[] args)
 		{
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 			CreateHostBuilder(args).Build().Run();
 		}
 

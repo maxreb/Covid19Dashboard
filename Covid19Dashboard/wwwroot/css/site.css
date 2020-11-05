@@ -9,6 +9,9 @@ html, body {
 	color: #fff
 }
 
+h1{
+	margin-bottom: 0;
+}
 
 app {
 	position: relative;
@@ -28,6 +31,7 @@ tr {
 
 .last-table {
 	width: 100%;
+	margin-bottom:60px; /*this is so the footer wont overlay if the screen is small*/
 }
 
 .content {
@@ -61,7 +65,6 @@ a {
 
 .mat-text-field {
 	align-items: center !important;
-	/*height: 90px !important;*/
 }
 
 .mat-text-field-input {
@@ -97,12 +100,30 @@ p, h1 {
 	margin: .5rem 0
 }
 
-.mdc-ripple-surface .row {
-	position: absolute;
-	mix-blend-mode: color-dodge;
-	width: 100%;
-	margin-top: 1rem;
+
+.district {
+	margin-top: 0;
+	font-variant-caps: all-small-caps;
+	letter-spacing: 2px;
+	font-size: 1rem;
 }
+
+.rlct-container {
+	margin-top: 2rem;
+	margin-bottom: .5rem;
+}
+
+	.rlct-container .rlct-title {
+		margin-bottom: -3rem;
+		margin-top: 0px;
+		font-weight: bold
+	}
+
+	.rlct-container .mdc-ripple-surface .row {
+		position: absolute;
+		mix-blend-mode: color-dodge;
+		width: 100%;
+	}
 
 
 #blazor-error-ui {

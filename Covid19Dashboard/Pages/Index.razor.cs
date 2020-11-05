@@ -16,8 +16,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] ICovidApiService CovidApi { get; set; } = default!;
 		[Inject] IMatToaster Toaster { get; set; } = default!;
 		[Inject] ILogger<Index> Logger { get; set; } = default!;
-		[Parameter]
-		public string? City { get; set; }
+		[Parameter] public string? City { get; set; }
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
 		private List<TimeTuple<double>> DataTotal { get; } = new List<TimeTuple<double>>();
@@ -25,15 +24,11 @@ namespace Covid19Dashboard.Pages
 		private bool Succeeded { get; set; }
 		private ICovid19Data? DatasetCurrent { get; set; }
 		private bool DataUpToDate { get; set; }
+		IEnumerable<string> Cities => CitiesRepository.CitiesToKeys.Keys;
 
 
 		string colorRki = "#000";
-		IEnumerable<string> cities = Enumerable.Empty<string>();
 
-		protected override void OnInitialized()
-		{
-			cities = CitiesRepository.CitiesToKeys.Keys;
-		}
 
 		protected override void OnAfterRender(bool firstRender)
 		{

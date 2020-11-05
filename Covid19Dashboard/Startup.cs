@@ -26,6 +26,7 @@ namespace Covid19Dashboard
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
 
+
 			services.AddSingleton<ICovidApiService, ArcgisService>();
 
 			services.AddMatToaster(config =>
