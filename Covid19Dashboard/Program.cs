@@ -22,7 +22,7 @@ namespace Covid19Dashboard
 					webBuilder.UseStartup<Startup>();
 				})
 			.ConfigureAppConfiguration((hostContext, app) => app.AddEnvironmentVariables("REBLE_"))
-			.ConfigureLogging(x => x.AddConsole(configure => configure.TimestampFormat = "yy-MM-dd HH:mm:ss"))
+			.ConfigureLogging(x => x.AddSimpleConsole(configure => configure.TimestampFormat = "yy-MM-dd HH:mm:ss"))
 			;
 	}
 }

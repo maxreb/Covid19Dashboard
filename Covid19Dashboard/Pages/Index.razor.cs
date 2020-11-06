@@ -18,6 +18,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] IMatToaster Toaster { get; set; } = default!;
 		[Inject] ILogger<Index> Logger { get; set; } = default!;
 		[Inject] IJSRuntime JsRuntime { get; set; } = default!;
+		[Inject] ViewCounterService ViewCounterService { get; set; } = default!;
 		[Parameter] public string? City { get; set; }
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
@@ -36,7 +37,11 @@ namespace Covid19Dashboard.Pages
 		protected override void OnAfterRender(bool firstRender)
 		{
 			if (firstRender)
+			{
 				Logger.LogInformation($"New user with parameter /{City ?? ""}");
+				ViewCounterService.NewView();
+			}
+
 		}
 
 		protected override void OnParametersSet()

@@ -97,9 +97,14 @@ namespace Covid19Dashboard.Services
 			{
 				var json = File.ReadAllText(file);
 				var data = JsonSerializer.Deserialize<ArcgisData>(json);
-				lastUpdate = data.Features.First().Attributes.LastUpdate;
-				currentDataSet = data;
-				_pastData[lastUpdate] = data;
+				if (data == null)
+					_logger.LogError($"File {json} is empty.");
+				else
+				{
+					lastUpdate = data.Features.First().Attributes.LastUpdate;
+					currentDataSet = data;
+					_pastData[lastUpdate] = data;
+				}
 			}
 			_logger.LogInformation("Database: {0} records found", _pastData.Count);
 			CleanUpDatabase();
@@ -158,7 +163,7 @@ namespace Covid19Dashboard.Services
 					}
 					lastUpdate = temp.LastUpdate;
 					currentDataSet = JsonSerializer.Deserialize<ArcgisData>(json);
-					_pastData[lastUpdate] = currentDataSet;
+					_pastData[lastUpdate] = currentDataSet ?? throw new NullReferenceException("ArcgisData seems to be empty");
 					File.WriteAllText(Path.Combine(databasePath, lastUpdate.ToString("yyyyMMdd") + ".json"), json);
 					CleanUpDatabase();
 				}
@@ -173,7 +178,7 @@ namespace Covid19Dashboard.Services
 		{
 			string json = await QueryJson(url).ConfigureAwait(false);
 			var data = JsonSerializer.Deserialize<ArcgisData>(json);
-			if (data.Features == null)
+			if (data?.Features == null)
 			{
 				throw new Exception(json);
 			}

@@ -28,6 +28,7 @@ namespace Covid19Dashboard
 
 
 			services.AddSingleton<ICovidApiService, ArcgisService>();
+			services.AddSingleton<ViewCounterService>();
 
 			services.AddMatToaster(config =>
 			{
