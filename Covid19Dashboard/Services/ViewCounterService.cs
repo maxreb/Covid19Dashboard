@@ -36,7 +36,7 @@ namespace Covid19Dashboard.Services
 
 			_viewsPerDate = dict ?? new ConcurrentDictionary<DateTime, int>();
 
-			_timer = new Timer(WriteToFile, null, TimeSpan.FromSeconds(0), TimeSpan.FromMinutes(1));
+			_timer = new Timer(WriteToFile, null, TimeSpan.FromMinutes(1), TimeSpan.FromHours(1));
 			_logger = logger;
 		}
 		public void NewView()
@@ -47,13 +47,18 @@ namespace Covid19Dashboard.Services
 			newViewsSinceLastWrite = true;
 		}
 
-		public bool TryGetViewsFromDay(DateTime date, out int views)
+		private bool TryGetViewsFromDay(DateTime date, out int views)
 		{
 			date = date.Date;
 			return _viewsPerDate.TryGetValue(date, out views);
 		}
+		public int GetViewsFromDay(DateTime date)
+		{
+			var b = TryGetViewsFromDay(date, out int views);
+			return b ? views : 0;
+		}
 
-		public int GetTodaysViews() => _viewsPerDate[DateTime.Today];
+		public int GetTodaysViews() => GetViewsFromDay(DateTime.Today);
 		public int GetTotalViews() => _viewsPerDate.Sum(t => t.Value);
 
 		public IReadOnlyDictionary<DateTime, int> GetAllViews()

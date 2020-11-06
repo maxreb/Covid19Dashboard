@@ -28,7 +28,7 @@ namespace Covid19Dashboard.Pages
 		private ICovid19Data? DatasetCurrent { get; set; }
 		private bool DataUpToDate { get; set; }
 		IEnumerable<string> Cities => CitiesRepository.CitiesToKeys.Keys;
-		private MatAutocompleteList<string> CityList { get; set; }
+		private MatAutocompleteList<string?>? CityList { get; set; }
 
 
 		string colorRki = "#000";
@@ -55,7 +55,8 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 			{
-				InvokeAsync(async () => await JsRuntime.InvokeVoidAsync("workaroundJs.focusElement", CityList?.Id));
+				if (CityList?.Id is string id)
+					InvokeAsync(async () => await JsRuntime.InvokeVoidAsync("workaroundJs.focusElement", id));
 				return false;
 			}
 			else
