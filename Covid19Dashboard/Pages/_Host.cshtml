@@ -35,6 +35,15 @@
 		<a class="dismiss">🗙</a>
 	</div>
 
+	<script type="text/javascript">
+		window.workaroundJs = {
+			focusElement: function (id) {
+				const element = document.getElementById(id); 
+				element.focus();
+			}
+		}
+	</script>
+
 	<script type="module" src="~/pwabuilder-sw-register.js"></script>
 
 	<script src="_framework/blazor.server.js"></script>

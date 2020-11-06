@@ -4,6 +4,7 @@ using Covid19Dashboard.Services;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] ICovidApiService CovidApi { get; set; } = default!;
 		[Inject] IMatToaster Toaster { get; set; } = default!;
 		[Inject] ILogger<Index> Logger { get; set; } = default!;
+		[Inject] IJSRuntime JsRuntime { get; set; } = default!;
 		[Parameter] public string? City { get; set; }
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
@@ -25,6 +27,7 @@ namespace Covid19Dashboard.Pages
 		private ICovid19Data? DatasetCurrent { get; set; }
 		private bool DataUpToDate { get; set; }
 		IEnumerable<string> Cities => CitiesRepository.CitiesToKeys.Keys;
+		private MatAutocompleteList<string> CityList { get; set; }
 
 
 		string colorRki = "#000";
@@ -47,6 +50,7 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 			{
+				InvokeAsync(async () => await JsRuntime.InvokeVoidAsync("workaroundJs.focusElement", CityList?.Id));
 				return false;
 			}
 			else

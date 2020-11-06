@@ -4,7 +4,7 @@
 <h1>Covid19 Dashboard</h1>
 
 
-<MatAutocompleteList Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
+<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
 </MatAutocompleteList>
 @if (Succeeded && DatasetCurrent != null)
 {
