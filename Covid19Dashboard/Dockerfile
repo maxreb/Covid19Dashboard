@@ -1,10 +1,13 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+ENV TZ=Europe/Berlin
 WORKDIR /app
 EXPOSE 80
+# Enable this to copy the json data files to the build
+# COPY ["Covid19Dashboard/data/", "/app/data/"]
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS build
 WORKDIR /src
 COPY ["Covid19Dashboard/Covid19Dashboard.csproj", "Covid19Dashboard/"]
 RUN dotnet restore "Covid19Dashboard/Covid19Dashboard.csproj"
@@ -15,11 +18,9 @@ RUN dotnet build "Covid19Dashboard.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Covid19Dashboard.csproj" -c Release -o /app/publish
 
+
 FROM base AS final
 WORKDIR /app
-ENV TZ=Europe/Berlin
-# Enable this to copy the json data files to the build
-# COPY ["Covid19Dashboard/data/", "/app/data/"]
 
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Covid19Dashboard.dll"]
