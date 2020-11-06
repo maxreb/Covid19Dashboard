@@ -113,9 +113,11 @@ namespace Covid19Dashboard.Services
 			if (files.Length > maxNumOfDataSets)
 			{
 				_logger.LogInformation("Clean up database, delete {0} files...", files.Length - maxNumOfDataSets);
-				foreach (var fileToDelete in files.Take(files.Length - maxNumOfDataSets))
+				var filesToDelete = files.OrderBy(f => f).Take(files.Length - maxNumOfDataSets);
+				foreach (var file in filesToDelete)
 				{
-					File.Delete(fileToDelete);
+					_logger.LogDebug("Delete {file}", Path.GetFileName(file));
+					File.Delete(file);
 				}
 			}
 			if (_pastData.Count > maxNumOfDataSets)
