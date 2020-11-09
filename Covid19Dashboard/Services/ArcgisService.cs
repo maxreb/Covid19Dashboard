@@ -1,4 +1,5 @@
 ﻿using Covid19Dashboard.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,18 @@ using System.Threading.Tasks;
 
 namespace Covid19Dashboard.Services
 {
+	public class ArcgisServiceOptions
+	{
+		public const string OptionsPath = "Arcgis";
+		public int MaxDataSets { get; set; } = 30;
+		public string DatabasePath { get; set; } = "data/arcgis/";
+	}
 	public sealed class ArcgisService : ICovidApiService, IDisposable
 	{
-		const string databasePath = "data/arcgis/";
 		const string query = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_Landkreisdaten/FeatureServer/0/query?outFields=cases7_per_100k,last_update,cases,GEN,rs,cases_per_100k,death_rate,deaths,cases_per_population&returnGeometry=false&outSR=4326&f=json";
 		const string queryAll = query + "&where=1%3D1";
 		const string cityNameQuery = query + "&where=gen=%27{0}%27";
 		const string cityKeyQuery = query + "&where=rs=%27{0}%27";
-		const int maxNumOfDataSets = 14;//14 Days
 
 
 		private readonly HttpClient _http;
@@ -30,14 +35,17 @@ namespace Covid19Dashboard.Services
 
 		private ArcgisData? currentDataSet;
 		DateTime lastUpdate;
+		ArcgisServiceOptions Options { get; }
 
 
 
-		public ArcgisService(IHttpClientFactory http, ILogger<ArcgisService> logger)
+		public ArcgisService(IHttpClientFactory http, ILogger<ArcgisService> logger, IConfiguration configuration)
 		{
 			_http = http.CreateClient();
 			_logger = logger;
 			_pastData = new SortedDictionary<DateTime, ArcgisData>();
+			Options = new ArcgisServiceOptions();
+			configuration.GetSection(ArcgisServiceOptions.OptionsPath).Bind(Options);
 			ReadDatabase();
 			_timer = new Timer(CheckForNewData, null, TimeSpan.FromSeconds(0), TimeSpan.FromMinutes(30));
 		}
@@ -87,12 +95,12 @@ namespace Covid19Dashboard.Services
 		{
 
 			_logger.LogInformation("Read database...");
-			if (!Directory.Exists(databasePath))
+			if (!Directory.Exists(Options.DatabasePath))
 			{
-				Directory.CreateDirectory(databasePath);
+				Directory.CreateDirectory(Options.DatabasePath);
 				return;
 			}
-			var files = Directory.GetFiles(databasePath, "*.json");
+			var files = Directory.GetFiles(Options.DatabasePath, "*.json");
 			foreach (var file in files)
 			{
 				var json = File.ReadAllText(file);
@@ -114,21 +122,21 @@ namespace Covid19Dashboard.Services
 		//more then maxNumOfDataSets (default: 14) from data file location
 		private void CleanUpDatabase()
 		{
-			var files = Directory.GetFiles(databasePath, "*.json");
-			if (files.Length > maxNumOfDataSets)
+			var files = Directory.GetFiles(Options.DatabasePath, "*.json");
+			if (files.Length > Options.MaxDataSets)
 			{
-				_logger.LogInformation("Clean up database, delete {0} files...", files.Length - maxNumOfDataSets);
-				var filesToDelete = files.OrderBy(f => f).Take(files.Length - maxNumOfDataSets);
+				_logger.LogInformation("Clean up database, delete {0} files...", files.Length - Options.MaxDataSets);
+				var filesToDelete = files.OrderBy(f => f).Take(files.Length - Options.MaxDataSets);
 				foreach (var file in filesToDelete)
 				{
 					_logger.LogDebug("Delete {file}", Path.GetFileName(file));
 					File.Delete(file);
 				}
 			}
-			if (_pastData.Count > maxNumOfDataSets)
+			if (_pastData.Count > Options.MaxDataSets)
 			{
-				_logger.LogInformation("Clean up memory, delete {0} datasets...", _pastData.Count - maxNumOfDataSets);
-				var rm = _pastData.Keys.Take(_pastData.Count - maxNumOfDataSets);
+				_logger.LogInformation("Clean up memory, delete {0} datasets...", _pastData.Count - Options.MaxDataSets);
+				var rm = _pastData.Keys.Take(_pastData.Count - Options.MaxDataSets);
 				foreach (var r in rm)
 					_pastData.Remove(r);
 			}
@@ -153,7 +161,7 @@ namespace Covid19Dashboard.Services
 						//This is because sometimes there could be a new date,
 						//but the data passed to us is the same as the data from yesterday...
 						//Even the RKI is not perfect all the time...
-						var jsonFromYesterday = File.ReadAllText(Path.Combine(databasePath, lastUpdate.ToString("yyyyMMdd") + ".json"));
+						var jsonFromYesterday = File.ReadAllText(Path.Combine(Options.DatabasePath, lastUpdate.ToString("yyyyMMdd") + ".json"));
 						if (hash.ComputeHash(Encoding.UTF8.GetBytes(json)) ==
 							hash.ComputeHash(Encoding.UTF8.GetBytes(jsonFromYesterday)))
 						{
@@ -164,7 +172,7 @@ namespace Covid19Dashboard.Services
 					lastUpdate = temp.LastUpdate;
 					currentDataSet = JsonSerializer.Deserialize<ArcgisData>(json);
 					_pastData[lastUpdate] = currentDataSet ?? throw new NullReferenceException("ArcgisData seems to be empty");
-					File.WriteAllText(Path.Combine(databasePath, lastUpdate.ToString("yyyyMMdd") + ".json"), json);
+					File.WriteAllText(Path.Combine(Options.DatabasePath, lastUpdate.ToString("yyyyMMdd") + ".json"), json);
 					CleanUpDatabase();
 				}
 			}
