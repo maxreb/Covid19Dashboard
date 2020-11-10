@@ -2,12 +2,12 @@
 <MatThemeProvider Theme="@theme1">
 	<Router AppAssembly="@typeof(Program).Assembly">
 		<Found Context="routeData">
-			<RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+			<RouteView RouteData="@routeData" />
 		</Found>
 		<NotFound>
-			<LayoutView Layout="@typeof(MainLayout)">
-				<p>Sorry, there's nothing at this address.</p>
-			</LayoutView>
+			<h1>Vier-Null-Vier</h1>
+			<p>Ups! Hier gibt' nichts zu sehen...</p>
+			<Covid19Dashboard.Components.HelpText></Covid19Dashboard.Components.HelpText>
 		</NotFound>
 	</Router>
 </MatThemeProvider>

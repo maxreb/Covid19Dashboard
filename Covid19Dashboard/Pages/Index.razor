@@ -1,41 +1,36 @@
 ﻿@using Covid19Dashboard.Components
 @page "/"
 @page "/{city}"
-<h1>Covid19 Dashboard</h1>
 
-<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
-</MatAutocompleteList>
-@if (Succeeded && DatasetCurrent != null)
-{
-	<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
-		<p @ref="context.Current" class="district">@DatasetCurrent.District</p>
-	</MatTooltip>
-	<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
-	<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
-	<MatRipple Color="@MatRippleColor.Secondary">
-		<table class="last-table">
-			<tr>
-				<th>Fälle/100k Einwohner</th>
-				<th>Tote (Gesamt)</th>
-			</tr>
-			<tr>
-				<td>@Math.Round(DatasetCurrent.CasesPer100k, 1)</td>
-				<td>@DatasetCurrent.TotalDeath</td>
-			</tr>
-
-			<tr>
-				<th>Betroffenenrate</th>
-				<th>Sterberate</th>
-			</tr>
-			<tr>
-				<td>@Math.Round(DatasetCurrent.CasesPerPopulation, 2)%</td>
-				<td>@Math.Round(DatasetCurrent.DeathRate, 2)%</td>
-			</tr>
-		</table>
-	</MatRipple>
-	<div class="footer">
-		Stand: @DatasetCurrent.LastUpdate.ToString("dd.MM.yyyy HH:mm")<br />
-		Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
-		(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
-	</div>
-}
+<div class="header">
+	<h1>Covid19 Dashboard</h1>
+</div>
+<div class="content">
+	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
+	</MatAutocompleteList>
+	@if (Succeeded && DatasetCurrent != null)
+	{
+		<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
+			<p @ref="context.Current" class="district">@DatasetCurrent.District</p>
+		</MatTooltip>
+		<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
+		<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
+		<RKIDetailDataTable Data="@DatasetCurrent"></RKIDetailDataTable>
+	}
+	else
+	{
+		<h2>Die Stadt gibt es leider nicht :(</h2>
+		<HelpText></HelpText>
+	}
+</div>
+<div class="footer">
+	Gefällt's dir? Dann kauf mir doch ein Bier :)
+	<form action="https://www.paypal.com/donate" method="post" target="_top">
+		<input type="hidden" name="hosted_button_id" value="JM5E4ANKTRESA" />
+		<input type="image" src="https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+		<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
+	</form>
+	Stand: @(DatasetCurrent?.LastUpdate.ToString("dd.MM.yyyy HH:mm") ?? "-")<br />
+	Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
+	(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
+</div>

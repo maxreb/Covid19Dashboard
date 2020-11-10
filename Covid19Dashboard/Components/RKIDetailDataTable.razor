@@ -1,0 +1,25 @@
+﻿<MatRipple Color="@MatRippleColor.Secondary">
+	<table class="last-table">
+		<tr>
+			<th>Fälle/100k Einwohner</th>
+			<th>Tote (Gesamt)</th>
+		</tr>
+		<tr>
+			<td>@Math.Round(Data.CasesPer100k, 1)</td>
+			<td>@Data.TotalDeath</td>
+		</tr>
+
+		<tr>
+			<th>Betroffenenrate</th>
+			<th>Sterberate</th>
+		</tr>
+		<tr>
+			<td>@Math.Round(Data.CasesPerPopulation, 2)%</td>
+			<td>@Math.Round(Data.DeathRate, 2)%</td>
+		</tr>
+	</table>
+</MatRipple>
+
+@code {
+	[Parameter] public ICovid19Data Data { get; set; } = default!;
+}
