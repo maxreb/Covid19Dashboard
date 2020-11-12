@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Covid19Dashboard.Services
 {
 	public static class CitiesRepository
 	{
-		public static IReadOnlyDictionary<string, string> CitiesToKeys = new ReadOnlyDictionary<string, string>(
-			new Dictionary<string, string>
+		public static readonly IReadOnlyDictionary<string, string> CitiesToKeys = new ReadOnlyDictionary<string, string>(
+			new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 			{
 				["Berlin Mitte"] = "11001",
 				["Hamburg"] = "02000",
