@@ -2,12 +2,8 @@
 @page "/"
 @page "/{city}"
 
-<div class="header">
-	<h1>Covid19 Dashboard</h1>
-</div>
 <div class="content">
-	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true">
-	</MatAutocompleteList>
+	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true"/>
 	@if (Succeeded && DatasetCurrent != null)
 	{
 		<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
@@ -20,7 +16,7 @@
 	else
 	{
 		<h2>Die Stadt gibt es leider nicht :(</h2>
-		<HelpText></HelpText>
+		<HelpText/>
 	}
 </div>
 <div class="footer">
