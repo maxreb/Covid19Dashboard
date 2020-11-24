@@ -31,12 +31,59 @@ namespace Covid19Dashboard.Components
 		private double dataYesterday;
 		private bool showTrend = false;
 
+		bool showOnlyGraph = false;
+		private string TitleClass => showOnlyGraph ? "rlct-title rlct-title-up" : "rlct-title rlct-title-down";
+		private string TextClasses => showOnlyGraph ? "rlct-text rlct-text-hide" : "rlct-text rlct-text-show";
 
 		private readonly LineConfig _chartConfig;
 		public RippleLineChartText()
 		{
 			_chartConfig = CreateNewChartConfig();
 		}
+
+
+		private void ToggleGraphView()
+		{
+			showOnlyGraph = !showOnlyGraph;
+			var xAxis = ((TimeAxis)_chartConfig.Options.Scales.xAxes.First());
+			var yAxis1 = ((LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[0]);
+			var yAxis2 = ((LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[1]);
+			var dataSets = _chartConfig.Data.Datasets.Cast<LineDataset<TimeTuple<double>>>();
+			if (showOnlyGraph)
+			{
+				//yAxis2.Display = AxisDisplay.False;
+				xAxis.Display = AxisDisplay.True;
+				yAxis1.Ticks.MaxTicksLimit = 8;
+				yAxis1.GridLines.Display = true;
+				yAxis1.GridLines.Color = "#aaa";
+
+				_chartConfig.Options.Title.Display = false;
+
+				foreach (var data in dataSets)
+				{
+					data.BackgroundColor = "#FFFA";
+					data.BorderColor = "#FFFC";
+				}
+			}
+			else
+			{
+				yAxis2.Display = AxisDisplay.True;
+				xAxis.Display = AxisDisplay.False;
+				yAxis1.Ticks.MaxTicksLimit = 2;
+				yAxis1.GridLines.Display = false;
+				_chartConfig.Options.Title.Display = true;
+				yAxis1.GridLines.Color = "#0000";
+
+				foreach (var data in dataSets)
+				{
+					data.BackgroundColor = "#666";
+					data.BorderColor = "#555";
+				}
+
+
+			}
+		}
+
 		protected override void OnParametersSet()
 		{
 			if (Data == null || Data.Count < 1)
@@ -71,8 +118,8 @@ namespace Covid19Dashboard.Components
 
 			var data = new LineDataset<TimeTuple<double>>(Data)
 			{
-				BorderColor = "#666",
-				BackgroundColor = "#555",
+				BorderColor = (showOnlyGraph ? "#FFFA" : "#666"),
+				BackgroundColor = (showOnlyGraph ? "#FFFC" : "#555"),
 				Fill = true,
 				BorderWidth = 2,
 				PointRadius = 0,
@@ -106,7 +153,12 @@ namespace Covid19Dashboard.Components
 							new TimeAxis
 							{
 								Display = AxisDisplay.False,
-								ScaleLabel = new ScaleLabel{LabelString = "Time"}
+								GridLines = new GridLines
+								{
+									Display = true,
+									Color = "#aaa",
+									BorderDash =  new[]{ 4.0,8.0 }
+								}
 							}
 				 },
 				 yAxes = new List<CartesianAxis> {
@@ -114,7 +166,8 @@ namespace Covid19Dashboard.Components
 								Position = Position.Left,
 								Ticks = new LinearCartesianTicks{ MaxTicksLimit = 2, FontColor = "#aaa" },
 								GridLines = new GridLines{
-									Display = false
+									Display = false,
+									BorderDash =  new[]{ 8.0,4.0 }
 								}
 							}
 							,new LinearCartesianAxis {

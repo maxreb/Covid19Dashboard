@@ -9,7 +9,7 @@ html, body {
 	color: #fff
 }
 
-h1 h2{
+h1 h2 {
 	margin-bottom: 0;
 }
 
@@ -59,7 +59,7 @@ a {
 }
 
 .foreground {
-	z-index: 10;
+	z-index: 5;
 }
 
 
@@ -114,14 +114,49 @@ p, h1, h2 {
 }
 
 .rlct-container {
+	position: relative;
 	margin-top: 2rem;
 	margin-bottom: .5rem;
 }
 
+	.rlct-container .rlct-text {
+		display: flex;
+		align-items: center;
+		height: 180px;
+	}
+
+	.rlct-container .rlct-text-show {
+		opacity: 1;
+		transition-property: opacity;
+		transition-duration: .2s;
+		transition-timing-function: ease;
+	}
+
+	.rlct-container .rlct-text-hide {
+		opacity: 0;
+		transition-property: opacity;
+		transition-duration: .5s;
+		transition-timing-function: ease;
+	}
+
 	.rlct-container .rlct-title {
-		margin-bottom: -3rem;
-		margin-top: 0px;
-		font-weight: bold
+		position: absolute;
+		left: 0;
+		font-weight: 100;
+	}
+
+	.rlct-container .rlct-title-down {
+		top: 0px;
+		transition-property: top;
+		transition-duration: .5s;
+		transition-timing-function: ease;
+	}
+
+	.rlct-container .rlct-title-up {
+		top: -20px;
+		transition-property: top;
+		transition-duration: .5s;
+		transition-timing-function: ease;
 	}
 
 	.rlct-container .mdc-ripple-surface .row {
@@ -130,6 +165,13 @@ p, h1, h2 {
 		width: 100%;
 	}
 
+th {
+	font-weight: 500
+}
+
+td {
+	font-weight: 200
+}
 
 #blazor-error-ui {
 	background: lightyellow;

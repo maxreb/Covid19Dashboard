@@ -1,4 +1,6 @@
-﻿using ChartJs.Blazor.ChartJS.Common.Time;
+﻿using Blazored.LocalStorage;
+using ChartJs.Blazor.ChartJS.Common.Time;
+using Covid19Dashboard.Components;
 using Covid19Dashboard.Entities;
 using Covid19Dashboard.Services;
 using MatBlazor;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Covid19Dashboard.Pages
 {
@@ -19,6 +22,8 @@ namespace Covid19Dashboard.Pages
 		[Inject] ILogger<Index> Logger { get; set; } = default!;
 		[Inject] IJSRuntime JsRuntime { get; set; } = default!;
 		[Inject] ViewCounterService ViewCounterService { get; set; } = default!;
+		[Inject] ILocalStorageService LocalStorage { get; set; } = default!;
+		[Inject] IMatDialogService MatDialogService { get; set; } = default!;
 		[Parameter] public string? City { get; set; }
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
@@ -34,15 +39,40 @@ namespace Covid19Dashboard.Pages
 		string colorRki = "#000";
 
 
-		protected override void OnAfterRender(bool firstRender)
+		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
 			{
-				Logger.LogInformation($"New user with parameter /{City ?? ""}");
-				ViewCounterService.NewView();
-			}
+				var id = await LocalStorage.GetItemAsStringAsync("id");
+				if (id == null)
+				{
+					id = Guid.NewGuid().ToString();
+					await LocalStorage.SetItemAsync("id", id);
+				}
 
+				Logger.LogInformation($"New user {id} with parameter /{City ?? ""}");
+				ViewCounterService.NewView();
+				List<Campaign> campaigns;
+				if (await LocalStorage.ContainKeyAsync(Campaigns.CookieName))
+					campaigns = await LocalStorage.GetItemAsync<List<Campaign>>(Campaigns.CookieName);
+				else
+					campaigns = new List<Campaign>();
+
+
+				if (campaigns.Count == 0 || campaigns.Last().Date != Campaigns.Current.Date)
+				{
+					await MatDialogService.OpenAsync(typeof(DialogWithPaypal),
+						new MatDialogOptions
+						{
+							Attributes = new Dictionary<string, object> { ["Campaign"] = Campaigns.Current }
+						});
+
+					await LocalStorage.SetItemAsync(Campaigns.CookieName, Campaigns.All);
+				}
+			}
 		}
+
+
 
 		protected override void OnParametersSet()
 		{

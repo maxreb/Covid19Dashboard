@@ -1,0 +1,39 @@
+﻿
+@if (Campaign != null)
+{
+	<MatDialogTitle style="display: flex; align-items: center;">
+		<div style="flex: 1;">Neues vom @Campaign.Date.ToString("dd.MM.yyyy")</div>
+	</MatDialogTitle>
+	<MatDialogContent>
+
+		<p style="white-space: pre-line">@Campaign.Text</p>
+
+		<p>Und das alles for free :)<br />Falls du Lust hast, kauf mir doch ein Bier<br />Vielen Dank an alle bisherigen Unterstüzer*Innen!</p>
+
+
+
+	</MatDialogContent>
+	<MatDialogActions>
+		<form class="helptext-paypal-form" action="https://www.paypal.com/donate" method="post" target="_top">
+			<input type="hidden" name="hosted_button_id" value="JM5E4ANKTRESA" />
+			<MatButton Raised="true" Type="submit">Unterstützen</MatButton>
+			<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
+		</form>
+		<MatButton OnClick="@(_ => CloseDialog())">Vielleicht Später</MatButton>
+	</MatDialogActions>
+
+}
+@code
+{
+
+	[Parameter]
+	public Campaign? Campaign { get; set; }
+
+	[CascadingParameter]
+	public MatDialogReference DialogReference { get; set; }
+
+	async Task CloseDialog()
+	{
+		DialogReference.Close(null);
+	}
+}

@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Covid19Dashboard.Services;
 using MatBlazor;
 using Microsoft.AspNetCore.Builder;
@@ -27,9 +28,14 @@ namespace Covid19Dashboard
 			services.AddServerSideBlazor();
 
 
+
+
 			services.AddSingleton<ICovidApiService, ArcgisService>();
 			services.AddSingleton<ViewCounterService>();
 
+			services.AddBlazoredLocalStorage();
+
+			services.AddMatBlazor();
 			services.AddMatToaster(config =>
 			{
 				config.Position = MatToastPosition.BottomFullWidth;
