@@ -51,7 +51,7 @@ namespace Covid19Dashboard.Pages
 				}
 
 				Logger.LogInformation($"New user {id} with parameter /{City ?? ""}");
-				ViewCounterService.NewView();
+				ViewCounterService.NewView(id);
 				List<Campaign> campaigns;
 				if (await LocalStorage.ContainKeyAsync(Campaigns.CookieName))
 					campaigns = await LocalStorage.GetItemAsync<List<Campaign>>(Campaigns.CookieName);
@@ -119,12 +119,13 @@ namespace Covid19Dashboard.Pages
 						DataTotal.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases)));
 						colorRki = DatasetCurrent.Cases7Per100k switch
 						{
-							var x when x == 0 => "#fff",
-							var x when x < 5 => "#D2D0AC",
-							var x when x >= 5 && x < 35 => "#D7D289",
-							var x when x >= 35 && x < 50 => "#D2990B",
-							var x when x >= 50 & x < 100 => "#B42B37",
-							_ => "#910B1E"
+							var x when x >= 500 => "#DA0183",
+							var x when x >= 250 => "#661313",
+							var x when x >= 100 => "#931315",
+							var x when x >= 50 => "#D13624",
+							var x when x >= 25 => "#FBB234",
+							var x when x >= 5 => "#FBEF7E",
+							_ => "#FBF8CA"
 						};
 
 						if (!DataUpToDate)

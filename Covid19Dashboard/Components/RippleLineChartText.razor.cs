@@ -158,7 +158,8 @@ namespace Covid19Dashboard.Components
 									Display = true,
 									Color = "#aaa",
 									BorderDash =  new[]{ 4.0,8.0 }
-								}
+								}, Ticks = new TimeTicks{ FontColor = "#aaa"}
+
 							}
 				 },
 				 yAxes = new List<CartesianAxis> {

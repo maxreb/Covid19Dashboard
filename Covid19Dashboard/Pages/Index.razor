@@ -3,7 +3,7 @@
 @page "/{city}"
 
 <div class="content">
-	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true"/>
+	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true" />
 	@if (Succeeded && DatasetCurrent != null)
 	{
 		<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
@@ -16,11 +16,16 @@
 	else
 	{
 		<h2>Die Stadt gibt es leider nicht :(</h2>
-		<HelpText/>
+		<HelpText />
 	}
 </div>
 <div class="footer">
+	<form class="helptext-paypal-form" action="https://www.paypal.com/donate" method="post" target="_top">
+		<input type="hidden" name="hosted_button_id" value="JM5E4ANKTRESA" />
+		<MatButton Style="height:20px; font-size:12px; letter-spacing: 2px;" Type="submit">Per Paypal Spenden</MatButton>
+		<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
+	</form>
 	Stand: @(DatasetCurrent?.LastUpdate.ToString("dd.MM.yyyy HH:mm") ?? "-")<br />
 	Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
-	(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
+	(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysUniqueViews() / @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
 </div>
