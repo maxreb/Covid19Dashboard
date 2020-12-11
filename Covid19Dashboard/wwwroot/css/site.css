@@ -38,9 +38,7 @@ tr {
 	width: 100%;
 }
 
-.content {
-	padding-top: 1.1rem;
-}
+
 
 .footer {
 	position: fixed;
@@ -111,6 +109,13 @@ p, h1, h2 {
 	font-variant-caps: all-small-caps;
 	letter-spacing: 2px;
 	font-size: 1rem;
+	animation: flash ease-in 3s 1;
+}
+@keyframes flash{
+	0% {
+		background-color: #ff9800
+	}
+	100% {background-color: none}
 }
 
 .rlct-container {
