@@ -38,7 +38,7 @@ namespace Covid19Dashboard
 			services.AddMatBlazor();
 			services.AddMatToaster(config =>
 			{
-				config.Position = MatToastPosition.BottomFullWidth;
+				config.Position = MatToastPosition.BottomCenter;
 				config.PreventDuplicates = true;
 				config.NewestOnTop = true;
 				config.ShowCloseButton = true;

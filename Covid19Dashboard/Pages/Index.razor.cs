@@ -132,6 +132,10 @@ namespace Covid19Dashboard.Pages
 						{
 							Toaster.Add($"Die aktuellen Covid-19 Fälle können derzeit nicht angezeigt werden. Das RKI arbeitet an der Lösung des Problems...", MatToastType.Danger, "Störung RKI");
 						}
+						else if (DateTime.Now.Date != DatasetCurrent.LastUpdate.Date)
+						{
+							Toaster.Add($"Das Dashboard zeigt zur Zeit noch den Datenstand vom Vortag an. In der Regel erfolgt die Aktualisierung der dem RKI neu übermittelten Covid-19 Fälle ab 03:00 Uhr. Bitte achten Sie auf die Angabe des Datenstandes unten im Dashboard", MatToastType.Info, "Hinweis");
+						}
 					}
 					else
 					{
