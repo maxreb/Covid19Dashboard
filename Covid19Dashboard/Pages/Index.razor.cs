@@ -25,6 +25,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] ILocalStorageService LocalStorage { get; set; } = default!;
 		[Inject] IMatDialogService MatDialogService { get; set; } = default!;
 		[Parameter] public string? City { get; set; }
+		public string? lastCity;
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
 		private List<TimeTuple<double>> DataTotal { get; } = new List<TimeTuple<double>>();
@@ -116,7 +117,11 @@ namespace Covid19Dashboard.Pages
 					Succeeded = CovidApi.TryGetFromCityKey(key, from, out IEnumerable<ICovid19Data> data);
 					if (Succeeded)
 					{
-						Logger.LogDebug($"Received data for city {City} ({key})");
+						if (lastCity != City)
+						{
+							Logger.LogDebug($"Received data for city {City} ({key})");
+							lastCity = City;
+						}
 						DatasetCurrent = data.Last();
 						DataUpToDate = DateTime.Now.AddHours(-5).Date <= DatasetCurrent.LastUpdate.Date;
 						Data7.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases7Per100k)));
