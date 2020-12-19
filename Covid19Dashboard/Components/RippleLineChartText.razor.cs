@@ -35,6 +35,8 @@ namespace Covid19Dashboard.Components
 		private string TitleClass => showOnlyGraph ? "rlct-title rlct-title-up" : "rlct-title rlct-title-down";
 		private string TextClasses => showOnlyGraph ? "rlct-text rlct-text-hide" : "rlct-text rlct-text-show";
 
+		private int TotalDays { get; set; }
+
 		private readonly LineConfig _chartConfig;
 		public RippleLineChartText()
 		{
@@ -90,6 +92,10 @@ namespace Covid19Dashboard.Components
 				throw new ArgumentNullException(nameof(Data));
 			if (ShowTrendIcon && ShowTrendNumber)
 				throw new ArgumentException($"You have to choose between {nameof(ShowTrendIcon)} and {nameof(ShowTrendNumber)}");
+
+			TotalDays = (int)(((DateTime)Data.First().Time) - DateTime.Now).TotalDays * -1;
+			TotalDays += 1;
+			_chartConfig.Options.Title.Text = $" - {TotalDays} Tage - ";
 			showTrend = ShowTrendNumber || ShowTrendIcon;
 			dataToday = Math.Round(Data[Data.Count - 1].YValue, 1);
 			if (Data.Count > 1)
@@ -145,7 +151,7 @@ namespace Covid19Dashboard.Components
 
 		 Options = new LineOptions
 		 {
-			 Title = new OptionsTitle { Text = " - 7 Tage - ", Display = true, Position = Position.Bottom },
+			 Title = new OptionsTitle { Text = $" - {TotalDays} Tage - ", Display = true, Position = Position.Bottom },
 			 Scales = new Scales
 			 {
 				 xAxes = new List<CartesianAxis>

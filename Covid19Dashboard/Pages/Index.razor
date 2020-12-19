@@ -12,8 +12,13 @@
 				<p @ref="context.Current" class="district">Daten werden angezeigt für: @DatasetCurrent.District</p>
 			</MatTooltip>
 		}
+		<div style=" margin: 20px auto; width: 50%;">
+			<MatSlideToggle @bind-Value="ShowAllData" Label=" Maximaler Zeitraum"></MatSlideToggle>
+		</div>
 		<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
 		<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
+
+
 		<RKIDetailDataTable Data="@DatasetCurrent"></RKIDetailDataTable>
 	}
 	else

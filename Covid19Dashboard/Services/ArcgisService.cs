@@ -17,7 +17,7 @@ namespace Covid19Dashboard.Services
 	public class ArcgisServiceOptions
 	{
 		public const string OptionsPath = "Arcgis";
-		public int MaxDataSets { get; set; } = 30;
+		public int MaxDataSets { get; set; } = 365;
 		public string DatabasePath { get; set; } = "data/arcgis/";
 	}
 	public sealed class ArcgisService : ICovidApiService, IDisposable

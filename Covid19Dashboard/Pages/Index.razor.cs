@@ -28,6 +28,7 @@ namespace Covid19Dashboard.Pages
 
 		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
 		private List<TimeTuple<double>> DataTotal { get; } = new List<TimeTuple<double>>();
+		private bool ShowAllData { get; set; }
 		private string TextStyle7 => "font-size: 120px; font-weight: 800; color: " + colorRki;
 		private bool Succeeded { get; set; }
 		private ICovid19Data? DatasetCurrent { get; set; }
@@ -109,7 +110,10 @@ namespace Covid19Dashboard.Pages
 
 				if (CitiesRepository.CitiesToKeys.TryGetValue(City, out string? key) && key != null)
 				{
-					Succeeded = CovidApi.TryGetFromCityKey(key, DateTime.UtcNow.AddDays(-7), out IEnumerable<ICovid19Data> data);
+					DateTime from = ShowAllData ?
+						DateTime.MinValue :
+						DateTime.UtcNow.AddDays(-7);
+					Succeeded = CovidApi.TryGetFromCityKey(key, from, out IEnumerable<ICovid19Data> data);
 					if (Succeeded)
 					{
 						Logger.LogDebug($"Received data for city {City} ({key})");
