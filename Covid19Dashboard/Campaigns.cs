@@ -14,6 +14,12 @@ namespace Covid19Dashboard
 * Cookies! Damit du diese Nachricht nur einmal siehst
 * Klickbar! Klick mal auf den Graphen und schau was passiert
 * Design! Paar kleine Design Anpassungen hier und da..."},
+new Campaign { Date = DateParser("26.12.2020") ,
+				Text = @"Merry X-Mas und ein frohes Neues! Bleibt alle Gesund... Ein paar neue Funktionen gibt es auch: 
+* Maximaler Zeitraum lässt dich alle Daten, die ich gesammelt habe anschauen, nicht nur die letzten 7 Tage
+* Wenn du ne Stadt eingibst, wird dir jetzt auch der richtige Link für die Stadt im Browser angezeigt zum Teilen oder für Favoriten
+* Weniger Logs - mittlerweile benutzten so viele diese App, dass mein Server mit Log Daten überschwemmt wurde. Danke dafür <3"},
+
 		};
 
 		public static Campaign Current => All.Last();

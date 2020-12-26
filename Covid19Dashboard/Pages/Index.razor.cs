@@ -24,6 +24,7 @@ namespace Covid19Dashboard.Pages
 		[Inject] ViewCounterService ViewCounterService { get; set; } = default!;
 		[Inject] ILocalStorageService LocalStorage { get; set; } = default!;
 		[Inject] IMatDialogService MatDialogService { get; set; } = default!;
+		[Inject] NavigationManager NavigationManager { get; set; } = default!;
 		[Parameter] public string? City { get; set; }
 		public string? lastCity;
 
@@ -80,6 +81,7 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 				City = "Kiel";
+
 			Update();
 
 		}
@@ -99,6 +101,7 @@ namespace Covid19Dashboard.Pages
 		}
 		private void Update()
 		{
+			
 			try
 			{
 				Data7.Clear();
@@ -108,7 +111,8 @@ namespace Covid19Dashboard.Pages
 
 				if (string.IsNullOrEmpty(City) || City.Length < 3)
 					return;
-
+				try { NavigationManager.NavigateTo($"/{Uri.EscapeUriString(City)}"); }
+				catch { }
 				if (CitiesRepository.CitiesToKeys.TryGetValue(City, out string? key) && key != null)
 				{
 					DateTime from = ShowAllData ?
