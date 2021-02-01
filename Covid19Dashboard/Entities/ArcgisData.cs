@@ -50,12 +50,23 @@ namespace Covid19Dashboard.Entities
 	public class Attributes : ICovid19Data
 	{
 		private string lastUpdateString;
+		private long lastUpdateTimestamp;
+		private string stateName;
 
 		[JsonPropertyName("cases7_per_100k")]
 		public double Cases7Per100k { get; set; }
-
+		[JsonPropertyName("Aktualisierung")]//This is for the state data
+		public long LastUpdateTimestamp
+		{
+			get => lastUpdateTimestamp;
+			set
+			{
+				lastUpdateTimestamp = value;
+				LastUpdate = DateTimeOffset.FromUnixTimeMilliseconds(value).UtcDateTime.ToLocalTime();
+			}
+		}
 		[JsonPropertyName("last_update")]
-		public string LastUpdateString
+		public string? LastUpdateString
 		{
 			get => lastUpdateString; set
 			{
@@ -82,6 +93,19 @@ namespace Covid19Dashboard.Entities
 		public int TotalDeath { get; set; }
 		[JsonPropertyName("RS")]
 		public string CityKey { get; set; }
+		[JsonPropertyName("LAN_ew_GEN")]
+		public string StateName
+		{
+			get => stateName; set
+			{
+				stateName = value;
+				District = value;
+			}
+		}
+		[JsonPropertyName("LAN_ew_EWZ")]
+		public long TotalStatePopulation { get; set; }
+		[JsonPropertyName("OBJECTID_1")]
+		public int StateKey { get; set; }
 	}
 
 

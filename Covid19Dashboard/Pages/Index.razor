@@ -6,15 +6,22 @@
 	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true" />
 	@if (Succeeded && DatasetCurrent != null)
 	{
+
+<div style=" margin: 20px auto; width: 100%; display:flex; justify-content:center;"><!--space-between-->
+	<div>
+		<MatSlideToggle @bind-Value="ShowAllData" Label=" max. Zeitraum"></MatSlideToggle>
+	</div>
+	@*<div>
+			<MatButton @onclick="SwitchToState" Raised="ShowStateData">Bundesland</MatButton>
+			<MatButton @onclick="SwitchToCounty" Raised="!ShowStateData">Kreis</MatButton>
+		</div>*@
+</div>
 		@if (DatasetCurrent.District != City)
 		{
 			<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
 				<p @ref="context.Current" class="district">Daten werden angezeigt für: @DatasetCurrent.District</p>
 			</MatTooltip>
 		}
-		<div style=" margin: 20px auto; width: 50%;">
-			<MatSlideToggle @bind-Value="ShowAllData" Label=" Maximaler Zeitraum"></MatSlideToggle>
-		</div>
 		<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
 		<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
 

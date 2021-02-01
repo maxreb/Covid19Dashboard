@@ -6,6 +6,11 @@ namespace Covid19Dashboard.Services
 {
 	public static class CitiesRepository
 	{
+		//data from: © GeoBasis-DE / BKG (2020)
+		public static int GetStateFromCityKey(string cityKey)
+			=> int.Parse(cityKey.Substring(0, 2));
+		public static int GetStateFromCityName(string cityName)
+			=> GetStateFromCityKey(CitiesToKeys[cityName]);
 		public static readonly IReadOnlyDictionary<string, string> CitiesToKeys = new ReadOnlyDictionary<string, string>(
 			new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 			{

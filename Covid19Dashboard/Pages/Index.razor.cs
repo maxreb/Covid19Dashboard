@@ -99,9 +99,12 @@ namespace Covid19Dashboard.Pages
 				return true;
 			}
 		}
+		protected bool ShowStateData { get; set; } = false;
+		private void SwitchToState() => ShowStateData = true;
+		private void SwitchToCounty() => ShowStateData = false;
 		private void Update()
 		{
-			
+
 			try
 			{
 				Data7.Clear();
@@ -118,7 +121,7 @@ namespace Covid19Dashboard.Pages
 					DateTime from = ShowAllData ?
 						DateTime.MinValue :
 						DateTime.UtcNow.AddDays(-7);
-					Succeeded = CovidApi.TryGetFromCityKey(key, from, out IEnumerable<ICovid19Data> data);
+					Succeeded = CovidApi.TryGetFromCityKey(key, from, out IEnumerable<ICovid19Data> data, null, ShowStateData);
 					if (Succeeded)
 					{
 						if (lastCity != City)
