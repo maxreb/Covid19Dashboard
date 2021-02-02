@@ -7,6 +7,9 @@ using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using RKIWebService.Entities;
+using RKIWebService.Services;
+using RKIWebService.Services.Arcgis;
 using System;
 using System.Collections.Generic;
 
@@ -107,6 +110,7 @@ namespace Covid19Dashboard.Pages
 
 			try
 			{
+				//if (NavigationManager.)
 				Data7.Clear();
 				DataTotal.Clear();
 				Succeeded = false;
@@ -114,14 +118,27 @@ namespace Covid19Dashboard.Pages
 
 				if (string.IsNullOrEmpty(City) || City.Length < 3)
 					return;
-				try { NavigationManager.NavigateTo($"/{Uri.EscapeUriString(City)}"); }
+
+				try
+				{
+					var path = $"/{Uri.EscapeUriString(City)}";
+					if (new UriBuilder(NavigationManager.Uri).Path != path)
+						NavigationManager.NavigateTo(path);
+				}
 				catch { }
 				if (CitiesRepository.CitiesToKeys.TryGetValue(City, out string? key) && key != null)
 				{
 					DateTime from = ShowAllData ?
 						DateTime.MinValue :
 						DateTime.UtcNow.AddDays(-7);
-					Succeeded = CovidApi.TryGetFromCityKey(key, from, out IEnumerable<ICovid19Data> data, null, ShowStateData);
+					IEnumerable<ICovid19Data> data;
+					if (ShowStateData)
+						Succeeded = CovidApi.TryGetStateData(key, from, out data);
+					else
+						Succeeded = CovidApi.TryGetCityData(key, from, out data);
+
+					var test = CovidApi.GetCurrentCityData(key);
+					var test2 = CovidApi.GetCurrentStateData(key);
 					if (Succeeded)
 					{
 						if (lastCity != City)

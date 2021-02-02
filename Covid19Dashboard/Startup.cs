@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Reble.RKIWebService;
+using RKIWebService.Services;
+using RKIWebService.Services.Arcgis;
 
 namespace Covid19Dashboard
 {
@@ -27,10 +30,8 @@ namespace Covid19Dashboard
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
 
+			services.AddRKIWebService();
 
-
-
-			services.AddSingleton<ICovidApiService, ArcgisService>();
 			services.AddSingleton<ViewCounterService>();
 
 			services.AddBlazoredLocalStorage();

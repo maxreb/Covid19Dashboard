@@ -26,4 +26,8 @@
     <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Reble.RKIWebService\Reble.RKIWebService.csproj" />
+  </ItemGroup>
 </Project>

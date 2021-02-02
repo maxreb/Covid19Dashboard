@@ -9,10 +9,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
 WORKDIR /src
-COPY ["Covid19Dashboard/Covid19Dashboard.csproj", "Covid19Dashboard/"]
-RUN dotnet restore "Covid19Dashboard/Covid19Dashboard.csproj"
+COPY ["Covid19Dashboard/Covid19Dashboard/Covid19Dashboard.csproj", "Covid19Dashboard/Covid19Dashboard/"]
+RUN dotnet restore "Covid19Dashboard/Covid19Dashboard/Covid19Dashboard.csproj"
 COPY . .
-WORKDIR "/src/Covid19Dashboard"
+WORKDIR "/src/Covid19Dashboard/Covid19Dashboard/"
 RUN dotnet build "Covid19Dashboard.csproj" -c Release -o /app/build
 
 FROM build AS publish
