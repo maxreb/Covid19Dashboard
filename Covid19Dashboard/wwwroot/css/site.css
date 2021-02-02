@@ -29,6 +29,13 @@ app {
 	flex: 1;
 }
 
+.switch-container {
+	margin: 20px auto;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
 tr {
 	text-align: center;
 }
