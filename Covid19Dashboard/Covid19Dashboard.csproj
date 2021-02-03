@@ -14,7 +14,7 @@
     <None Remove="data\**" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="Exists('wwwroot\.well-known\assetlinks.json')">
     <Content Include="wwwroot\.well-known\assetlinks.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

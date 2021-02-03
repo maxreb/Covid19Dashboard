@@ -9,3 +9,11 @@ Example: https://covid19.reble.eu/Hamburg
 
 ![Screenshot](https://github.com/maxreb/Covid19Dashboard/blob/main/doc/screenshot.png?raw=true)
 
+#Installation
+
+```
+git clone https://github.com/maxreb/Covid19Dashboard
+git clone https://github.com/maxreb/RKIWebService
+cd Covid19Dashboard
+dotnet run --project Covid19Dashboard/Covid19Dashboard.csproj
+```
