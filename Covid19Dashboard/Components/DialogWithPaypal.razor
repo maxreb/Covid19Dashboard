@@ -1,4 +1,4 @@
-﻿
+﻿@inject IJSRuntime JsRuntime
 @if (Campaign != null)
 {
 	<MatDialogTitle style="display: flex; align-items: center;">
@@ -6,9 +6,21 @@
 	</MatDialogTitle>
 	<MatDialogContent>
 
-		<p style="white-space: pre-line">@Campaign.Text</p>
-
-		<p>Vielen Dank an alle Unterstüzer*Innen!</p>
+		<p style="white-space: pre-line; text-align: left;">@Campaign.Text</p>
+		@if (Campaign.Links is not null)
+		{
+			<h3>Links</h3>
+			<ul>
+				@foreach (var lnk in Campaign.Links)
+				{
+					<li><a href="@lnk.uri.ToString()" target="_blank">@lnk.text</a></li>
+				}
+			</ul>
+		}
+		<p style="white-space: pre-line">
+			Wenn dir meine Arbeit gefällt, kauf mir doch gerne ein Bierchen :)
+			Vielen Dank an alle Unterstützerinnen!
+		</p>
 
 
 
@@ -19,7 +31,7 @@
 			<MatButton Type="submit">Unterstützen</MatButton>
 			<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
 		</form>
-		<MatButton  Raised="true" OnClick="@(_ => CloseDialog())">Vielleicht Später</MatButton>
+		<MatButton Id="focus-button" OnClick="@(_ => CloseDialog())">Vielleicht Später</MatButton>
 	</MatDialogActions>
 
 }
@@ -35,5 +47,9 @@
 	async Task CloseDialog()
 	{
 		DialogReference.Close(null);
+	}
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		await JsRuntime.InvokeVoidAsync("workaroundJs.focusElement", "focus-button");
 	}
 }
