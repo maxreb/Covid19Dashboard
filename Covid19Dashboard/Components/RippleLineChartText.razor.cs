@@ -134,7 +134,7 @@ namespace Covid19Dashboard.Components
 			_chartConfig.Data.Datasets.Add(data);
 		}
 
-		private (string icon, string style) GetIconAndStyle(double a, double b)
+		private static (string icon, string style) GetIconAndStyle(double a, double b)
 		{
 			string style = "width:100%;color:";
 			if (a > b)
