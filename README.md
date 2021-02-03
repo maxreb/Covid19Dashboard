@@ -9,7 +9,7 @@ Example: https://covid19.reble.eu/Hamburg
 
 ![Screenshot](https://github.com/maxreb/Covid19Dashboard/blob/main/doc/screenshot.png?raw=true)
 
-#Installation
+# Installation
 
 ```
 git clone https://github.com/maxreb/Covid19Dashboard
