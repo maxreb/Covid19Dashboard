@@ -84,7 +84,8 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 				City = "Kiel";
-
+			else
+				City = City.Replace('_', ' ');
 			Update();
 
 		}
@@ -105,6 +106,12 @@ namespace Covid19Dashboard.Pages
 		protected bool ShowStateData { get; set; } = false;
 		private void SwitchToState() => ShowStateData = true;
 		private void SwitchToCounty() => ShowStateData = false;
+
+		private static string GetUriFromCity(string city)
+		{
+			city = city.Replace(' ', '_');//We need to do this as %20 chars are not allowed yet, see https://github.com/dotnet/aspnetcore/pull/26769
+			return $"/{Uri.EscapeUriString(city)}";
+		}
 		private void Update()
 		{
 
@@ -121,7 +128,7 @@ namespace Covid19Dashboard.Pages
 
 				try
 				{
-					var path = $"/{Uri.EscapeUriString(City)}";
+					var path = GetUriFromCity(City);
 					if (new UriBuilder(NavigationManager.Uri).Path != path)
 						NavigationManager.NavigateTo(path);
 				}
