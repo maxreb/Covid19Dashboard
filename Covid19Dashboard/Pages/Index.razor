@@ -3,6 +3,18 @@
 @page "/{city}"
 
 <div class="content">
+	@if (Succeeded && DatasetCurrent != null && DatasetCurrent.District != City)
+	{
+		<p class="district">Daten für: @DatasetCurrent.District</p>
+	}
+	else
+	{
+		<style>
+			.mat-text-field {
+				align-items: center !important;
+			}
+		</style>
+	}
 	<MatAutocompleteList @ref="CityList" Items="Cities" Label="Stadt" ShowClearButton="true" NumberOfElementsInPopup="12" @bind-Value=@City FullWidth="true" />
 	@if (Succeeded && DatasetCurrent != null)
 	{
@@ -15,12 +27,6 @@
 				<MatButton @onclick="SwitchToCounty" Raised="!ShowStateData">Kreis</MatButton>
 			</div>
 		</div>
-		@if (DatasetCurrent.District != City)
-		{
-			<MatTooltip Tooltip="Landkreis/Kreisfreie Stadt/Bezirk">
-				<p @ref="context.Current" class="district">Daten werden angezeigt für: @DatasetCurrent.District</p>
-			</MatTooltip>
-		}
 		<RippleLineChartText Data="Data7" ShowTrendIcon="true" Title="Inzidenz (7 Tage / 100.000 Einwohner)" TextStyle="@TextStyle7"></RippleLineChartText>
 		<RippleLineChartText Data="DataTotal" ShowTrendNumber="true" Title="Fälle gesamt" TextStyle="font-size: 100px; font-weight: 600; color: #bbb;"></RippleLineChartText>
 

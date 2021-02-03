@@ -73,9 +73,7 @@ a {
 	text-shadow: 0 0 3px #000;
 }
 
-.mat-text-field {
-	align-items: center !important;
-}
+
 
 .mat-text-field-input {
 	border-radius: 5px !important;
@@ -112,17 +110,24 @@ p, h1, h2 {
 
 
 .district {
-	margin-top: 0;
 	font-variant-caps: all-small-caps;
-	letter-spacing: 2px;
+	letter-spacing: 1px;
 	font-size: 1rem;
 	animation: flash ease-in 3s 1;
+	position: absolute;
+	margin-top: 1rem;
+	border-radius: 4px;
+	z-index: 25;
 }
-@keyframes flash{
+
+@keyframes flash {
 	0% {
 		background-color: #ff9800
 	}
-	100% {background-color: none}
+
+	100% {
+		background-color: none
+	}
 }
 
 .rlct-container {
