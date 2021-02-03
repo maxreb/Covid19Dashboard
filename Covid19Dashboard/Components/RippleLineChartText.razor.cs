@@ -187,6 +187,7 @@ namespace Covid19Dashboard.Components
 				 }
 			 },
 			 Responsive = true,
+			 MaintainAspectRatio = false,
 			 Hover = new LineOptionsHover { Enabled = false },
 			 Legend = new Legend
 			 {
