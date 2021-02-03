@@ -10,6 +10,7 @@ Example: https://covid19.reble.eu/Hamburg
 ![Screenshot](https://github.com/maxreb/Covid19Dashboard/blob/main/doc/screenshot.png?raw=true)
 
 # Installation
+This works for Linux and for Windows
 
 You need: git, .net core 5.0
 
