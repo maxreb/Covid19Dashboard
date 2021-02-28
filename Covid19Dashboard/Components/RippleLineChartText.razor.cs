@@ -6,6 +6,7 @@ using ChartJs.Blazor.ChartJS.Common.Handlers;
 using ChartJs.Blazor.ChartJS.Common.Properties;
 using ChartJs.Blazor.ChartJS.Common.Time;
 using ChartJs.Blazor.ChartJS.LineChart;
+using Covid19Dashboard.Entities;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Covid19Dashboard.Components
 {
+
 	public partial class RippleLineChartText
 	{
 		[Parameter]
@@ -27,62 +29,73 @@ namespace Covid19Dashboard.Components
 		[Parameter]
 		public bool ShowTrendNumber { get; set; }
 
+		[Parameter]
+		public IEnumerable<LineChartThresholds> Thresholds { get; set; } = Enumerable.Empty<LineChartThresholds>();
+
 		private double dataToday;
 		private double dataYesterday;
 		private bool showTrend = false;
 
 		bool showOnlyGraph = false;
+		private LineDataset<TimeTuple<double>>? mainDataset;
+
 		private string TitleClass => showOnlyGraph ? "rlct-title rlct-title-up" : "rlct-title rlct-title-down";
 		private string TextClasses => showOnlyGraph ? "rlct-text rlct-text-hide" : "rlct-text rlct-text-show";
 
 		private int TotalDays { get; set; }
 
 		private readonly LineConfig _chartConfig;
+		private readonly TimeAxis _xAxis;
+		private readonly LinearCartesianAxis _yAxis1;
+		private readonly LinearCartesianAxis _yAxis2;
+
 		public RippleLineChartText()
 		{
 			_chartConfig = CreateNewChartConfig();
+
+			_xAxis = (TimeAxis)_chartConfig.Options.Scales.xAxes.First();
+			_yAxis1 = (LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[0];
+			_yAxis2 = (LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[1];
 		}
 
 
 		private void ToggleGraphView()
 		{
+			if (mainDataset == null)
+				return;
 			showOnlyGraph = !showOnlyGraph;
-			var xAxis = ((TimeAxis)_chartConfig.Options.Scales.xAxes.First());
-			var yAxis1 = ((LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[0]);
-			var yAxis2 = ((LinearCartesianAxis)_chartConfig.Options.Scales.yAxes[1]);
-			var dataSets = _chartConfig.Data.Datasets.Cast<LineDataset<TimeTuple<double>>>();
+
+
+			foreach (var t in Thresholds)
+			{
+				t.ShowLine(showOnlyGraph);
+			}
+
 			if (showOnlyGraph)
 			{
-				//yAxis2.Display = AxisDisplay.False;
-				xAxis.Display = AxisDisplay.True;
-				yAxis1.Ticks.MaxTicksLimit = 8;
-				yAxis1.GridLines.Display = true;
-				yAxis1.GridLines.Color = "#aaa";
+				_xAxis.Display = AxisDisplay.True;
+				_yAxis1.Ticks.MaxTicksLimit = 8;
+				_yAxis1.GridLines.Display = true;
+				_yAxis1.GridLines.Color = "#aaa";
 
 				_chartConfig.Options.Title.Display = false;
 
-				foreach (var data in dataSets)
-				{
-					data.BackgroundColor = "#FFFA";
-					data.BorderColor = "#FFFC";
-				}
+
+				mainDataset.BackgroundColor = "#FFFA";
+				mainDataset.BorderColor = "#FFFC";
 			}
 			else
 			{
-				yAxis2.Display = AxisDisplay.True;
-				xAxis.Display = AxisDisplay.False;
-				yAxis1.Ticks.MaxTicksLimit = 2;
-				yAxis1.GridLines.Display = false;
+				_yAxis2.Display = AxisDisplay.True;
+				_xAxis.Display = AxisDisplay.False;
+				_yAxis1.Ticks.MaxTicksLimit = 2;
+				_yAxis1.GridLines.Display = false;
 				_chartConfig.Options.Title.Display = true;
-				yAxis1.GridLines.Color = "#0000";
-
-				foreach (var data in dataSets)
-				{
-					data.BackgroundColor = "#666";
-					data.BorderColor = "#555";
-				}
+				_yAxis1.GridLines.Color = "#0000";
 
 
+				mainDataset.BackgroundColor = "#666";
+				mainDataset.BorderColor = "#555";
 			}
 		}
 
@@ -106,6 +119,7 @@ namespace Covid19Dashboard.Components
 			{
 				showTrend = false;
 			}
+
 			double min = Data.Min(x => x.YValue);
 			double max = Data.Max(x => x.YValue);
 			double den = 10;
@@ -122,7 +136,8 @@ namespace Covid19Dashboard.Components
 				yAxis.Ticks.Max = max;
 			}
 
-			var data = new LineDataset<TimeTuple<double>>(Data)
+
+			mainDataset = new LineDataset<TimeTuple<double>>(Data)
 			{
 				BorderColor = (showOnlyGraph ? "#FFFA" : "#666"),
 				BackgroundColor = (showOnlyGraph ? "#FFFC" : "#555"),
@@ -131,15 +146,23 @@ namespace Covid19Dashboard.Components
 				PointRadius = 0,
 				LineTension = 0.1
 			};
-			_chartConfig.Data.Datasets.Add(data);
+
+
+			_chartConfig.Data.Datasets.Add(mainDataset);
+			foreach (var t in Thresholds)
+			{
+				var thrData = t.GetDatasetFromExistingTimeTuples(Data);
+				t.ShowLine(showOnlyGraph);
+				_chartConfig.Data.Datasets.Add(thrData);
+			}
 		}
 
-		private (string icon, string style) GetIconAndStyle(double a, double b)
+		private static (string icon, string style) GetIconAndStyle(double newVal, double oldVal)
 		{
 			string style = "width:100%;color:";
-			if (a > b)
+			if (newVal > oldVal)
 				return ("arrow_upward", style + "#f00");
-			else if (a == b)
+			else if (newVal == oldVal)
 				return ("indeterminate_check_box", style + "#fff");
 			return ("arrow_downward", style + "#0f0");
 		}
@@ -163,7 +186,7 @@ namespace Covid19Dashboard.Components
 								{
 									Display = true,
 									Color = "#aaa",
-									BorderDash =  new[]{ 4.0,8.0 }
+									BorderDash =  new[]{ 10.0,5.0 }
 								}, Ticks = new TimeTicks{ FontColor = "#aaa"}
 
 							}
@@ -174,7 +197,7 @@ namespace Covid19Dashboard.Components
 								Ticks = new LinearCartesianTicks{ MaxTicksLimit = 2, FontColor = "#aaa" },
 								GridLines = new GridLines{
 									Display = false,
-									BorderDash =  new[]{ 8.0,4.0 }
+									BorderDash =  new[]{ 10.0,5.0 }
 								}
 							}
 							,new LinearCartesianAxis {

@@ -157,16 +157,7 @@ namespace Covid19Dashboard.Pages
 						DataUpToDate = DateTime.Now.AddHours(-5).Date <= DatasetCurrent.LastUpdate.Date;
 						Data7.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases7Per100k)));
 						DataTotal.AddRange(data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases)));
-						colorRki = DatasetCurrent.Cases7Per100k switch
-						{
-							var x when x >= 500 => "#DA0183",
-							var x when x >= 250 => "#661313",
-							var x when x >= 100 => "#931315",
-							var x when x >= 50 => "#D13624",
-							var x when x >= 25 => "#FBB234",
-							var x when x >= 5 => "#FBEF7E",
-							_ => "#FBF8CA"
-						};
+						colorRki = RkiColorFromValue(DatasetCurrent.Cases7Per100k);
 
 						if (!DataUpToDate)
 						{
@@ -188,5 +179,19 @@ namespace Covid19Dashboard.Pages
 				Toaster.Add(ex.Message, MatToastType.Danger, "Error");
 			}
 		}
+
+		private static string RkiColorFromValue(double value)
+			=>
+			 value switch
+			 {
+				 var x when x >= 500 => "#DA0183",
+				 var x when x >= 250 => "#661313",
+				 var x when x >= 100 => "#931315",
+				 var x when x >= 50 => "#D13624",
+				 var x when x >= 25 => "#FBB234",
+				 var x when x >= 5 => "#FBEF7E",
+				 _ => "#FBF8CA"
+			 };
+
 	}
 }
