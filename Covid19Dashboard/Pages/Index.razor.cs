@@ -12,7 +12,7 @@ using RKIWebService.Services;
 using RKIWebService.Services.Arcgis;
 using System;
 using System.Collections.Generic;
-
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -180,16 +180,26 @@ namespace Covid19Dashboard.Pages
 
 				if (!DataUpToDate)
 				{
-					Toaster.Add($"Die aktuellen Covid-19 Fälle können derzeit nicht angezeigt werden. Das RKI arbeitet an der Lösung des Problems...", MatToastType.Danger, "Störung RKI");
+					ShowToastOnlyOncePerScope($"Die aktuellen Covid-19 Fälle können derzeit nicht angezeigt werden. Das RKI arbeitet an der Lösung des Problems...", MatToastType.Danger, "Störung RKI");
 				}
 				else if (DateTime.Now.Date != DatasetCurrent.LastUpdate.Date)
 				{
-					Toaster.Add($"Das Dashboard zeigt zur Zeit noch den Datenstand vom Vortag an. In der Regel erfolgt die Aktualisierung der dem RKI neu übermittelten Covid-19 Fälle ab 03:00 Uhr. Bitte achten Sie auf die Angabe des Datenstandes unten im Dashboard", MatToastType.Info, "Hinweis");
+					ShowToastOnlyOncePerScope($"Das Dashboard zeigt zur Zeit noch den Datenstand vom Vortag an. In der Regel erfolgt die Aktualisierung der dem RKI neu übermittelten Covid-19 Fälle ab 03:00 Uhr. Bitte achten Sie auf die Angabe des Datenstandes unten im Dashboard", MatToastType.Info, "Hinweis");
 				}
 			}
 			else
 			{
 				Toaster.Add($"Keine Daten für die Stadt {City}", MatToastType.Warning);
+			}
+		}
+		private readonly HashSet<int> messagesAlreadyShown = new HashSet<int>();
+		private void ShowToastOnlyOncePerScope(string message, MatToastType type, string? title = null)
+		{
+			var hash = message.GetHashCode();
+			if (!messagesAlreadyShown.Contains(hash))
+			{
+				Toaster.Add(message, type, title);
+				messagesAlreadyShown.Add(hash);
 			}
 		}
 
