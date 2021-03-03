@@ -39,8 +39,20 @@ Links = new List<(Uri uri, string text)>
 		(new Uri("https://www.schleswig-holstein.de/DE/Landesregierung/I/_startseite/Artikel2021/I/210126_stufenplan.html"),"Zum Stufenplan"),
 		(new Uri("https://github.com/maxreb/Covid19Dashboard"),"Zum Quellcode dieser Software (GitHub)")
 	}
-}
-};
+},
+new Campaign { DateUTC = DateUTCParser("04.03.2021") ,
+				Text = @"Einige von euch haben die neue Funktion schon erkannt, nach der gestrigen Bund-Länder-Konferenz möchte ich sie euch noch mal kurz präsentieren: Wenn ihr auf den oberen Graphen klickt seht ihr jetzt die wichtigen Inzidenzwerte gestrichelt und farbig hervorgehoben:
+
+35:	 Orange
+50:  Rot
+100: Dunkel Rot
+
+Falls ihr noch Anregungen habt könnt ihr gerne bei GitHub ein 'Issue' eintragen, link findet ihr unten.
+
+Bleibt Gesund!"
+,ShowDonation = false,
+Links = new List<(Uri uri, string text)>{(new Uri("https://github.com/maxreb/Covid19Dashboard/issues"),"GitHub Issues")}
+} };
 
 		public static Campaign Current => All.Last();
 		public const string CookieName = "campaigns";
