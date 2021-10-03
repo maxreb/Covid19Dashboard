@@ -9,6 +9,7 @@ namespace Covid19Dashboard.Entities
 	{
 		public string Text { get; set; } = string.Empty;
 		public List<(Uri uri, string text)>? Links { get; set; }
-		public DateTime Date { get; set; }
+		public DateTime DateUTC { get; set; }
+		public bool ShowDonation { get; set; } = true;
 	}
 }

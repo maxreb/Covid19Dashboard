@@ -2,7 +2,7 @@
 @if (Campaign != null)
 {
 	<MatDialogTitle style="display: flex; align-items: center;">
-		<div style="flex: 1;">Neues vom @Campaign.Date.ToString("dd.MM.yyyy")</div>
+		<div style="flex: 1;">Neues vom @Campaign.DateUTC.ToString("dd.MM.yyyy")</div>
 	</MatDialogTitle>
 	<MatDialogContent>
 
@@ -17,21 +17,30 @@
 				}
 			</ul>
 		}
-		<p style="white-space: pre-line">
-			Wenn dir meine Arbeit gefällt, kauf mir doch gerne ein Bierchen :)
-			Vielen Dank an alle Unterstützerinnen!
-		</p>
-
+		@if (Campaign.ShowDonation)
+		{
+			<p style="white-space: pre-line">
+				Wenn dir meine Arbeit gefällt, kauf mir doch gerne ein Bierchen :)
+				Vielen Dank an alle Unterstützerinnen!
+			</p>
+		}
 
 
 	</MatDialogContent>
 	<MatDialogActions>
-		<form class="helptext-paypal-form" action="https://www.paypal.com/donate" method="post" target="_top">
-			<input type="hidden" name="hosted_button_id" value="JM5E4ANKTRESA" />
-			<MatButton Type="submit">Unterstützen</MatButton>
-			<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
-		</form>
-		<MatButton Id="focus-button" OnClick="@CloseDialog">Vielleicht Später</MatButton>
+		@if (Campaign.ShowDonation)
+		{
+			<form class="helptext-paypal-form" action="https://www.paypal.com/donate" method="post" target="_top">
+				<input type="hidden" name="hosted_button_id" value="JM5E4ANKTRESA" />
+				<MatButton Type="submit">Unterstützen</MatButton>
+				<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
+			</form>
+			<MatButton Id="focus-button" OnClick="@(_ => CloseDialog())">Vielleicht Später</MatButton>
+		}
+		else
+		{
+			<MatButton Id="focus-button" Raised="true" OnClick="@(_ => CloseDialog())">All rigthy</MatButton>
+		}
 	</MatDialogActions>
 
 }
@@ -42,11 +51,11 @@
 	public Campaign? Campaign { get; set; }
 
 	[CascadingParameter]
-	public MatDialogReference? DialogReference { get; set; }
+	public MatDialogReference DialogReference { get; set; }
 
-	void CloseDialog()
+	async Task CloseDialog()
 	{
-		DialogReference?.Close(null);
+		DialogReference.Close(null);
 	}
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{

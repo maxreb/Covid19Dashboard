@@ -32,6 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Reble.RKIWebService\Reble.RKIWebService.csproj" />
+    <ProjectReference Include="..\..\RKIWebService\Reble.RKIWebService.csproj" />
   </ItemGroup>
 </Project>

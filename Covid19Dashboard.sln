@@ -7,11 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid19Dashboard", "Covid19
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F205A35D-F4F1-4491-A633-C866C1A04101}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reble.RKIWebService", "..\Reble.RKIWebService\Reble.RKIWebService.csproj", "{A22FF9A9-A4DF-48EA-974C-05CF857FF5BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKIWebService", "..\RKIWebService\Reble.RKIWebService.csproj", "{A22FF9A9-A4DF-48EA-974C-05CF857FF5BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
