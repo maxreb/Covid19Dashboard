@@ -1,32 +1,46 @@
 ﻿@using ChartJs.Blazor.Charts
 <div class="rlct-container">
 
-	<p class="@TitleClass">@Title</p>
+    <p class="@TitleClass">@Title</p>
 
-	<MatRipple Color="@MatRippleColor.Secondary" @onclick="ToggleGraphView">
-		<ChartJsLineChart Config="@_chartConfig" Height="180"></ChartJsLineChart>
-		<div class="@TextClasses">
-			@if (showTrend)
-			{
-				<div style="width:100%"></div>
-			}
-			<p style="@TextStyle">@dataToday.ToString(System.Globalization.CultureInfo.InvariantCulture)</p>
-			@if (showTrend)
-			{
-				var x = GetIconAndStyle(dataToday, dataYesterday);
-				var tooltip = "Gestern: " + dataYesterday;
-				<MatTooltip Tooltip=@tooltip>
-					@if (ShowTrendIcon)
-					{
-						<MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon" />
-					}
-					else if (ShowTrendNumber)
-					{
-						<p class="foreground" @ref="@context.Current" style="color: #ff9800">@(dataToday > dataYesterday ? "+" : "") @(dataToday - dataYesterday)</p>
-					}
+    @if (InfoTooltip is not null){
+        <MatTooltip Tooltip="@InfoTooltip" Style="white-space: pre-wrap;font-size: 12px; font-weight: 400;">
+            <MatIconButton
+                RefBack="context"
+                Icon="@MatIconNames.Info"
+                Style="position:absolute; right: 0; z-index: 4; ">
+            </MatIconButton>
+        </MatTooltip>
+    }
 
-				</MatTooltip>
-			}
-		</div>
-	</MatRipple>
+    <MatRipple Color="@MatRippleColor.Secondary" @onclick="ToggleGraphView">
+        <ChartJsLineChart Config="@_chartConfig" Height="180"></ChartJsLineChart>
+        <div class="@TextClasses">
+            @if (showTrend)
+            {
+                <div style="width:100%"></div>
+            }
+            <p style="@TextStyle">@dataToday.ToString(System.Globalization.CultureInfo.InvariantCulture)</p>
+            @if (showTrend)
+            {
+                var x = GetIconAndStyle(dataToday, dataYesterday);
+                var tooltip = "Gestern: " + dataYesterday;
+                <MatTooltip Tooltip=@tooltip>
+                    @if (ShowTrendIcon)
+                    {
+                        <MatIcon Class="foreground" RefBack="@context" Style="@x.style" Icon="@x.icon"/>
+                    }
+                    else if (ShowTrendNumber)
+                    {
+                        <p class="foreground"
+                           @ref="@context.Current"
+                           style="color: #ff9800">
+                            @(dataToday > dataYesterday ? "+" : "") @(Math.Round(dataToday - dataYesterday, 1))
+                        </p>
+                    }
+
+                </MatTooltip>
+            }
+        </div>
+    </MatRipple>
 </div>

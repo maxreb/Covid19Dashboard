@@ -31,6 +31,8 @@ namespace Covid19Dashboard.Components
 
 		[Parameter]
 		public IEnumerable<LineChartThresholds> Thresholds { get; set; } = Enumerable.Empty<LineChartThresholds>();
+		[Parameter]
+		public string? InfoTooltip { get; set; }
 
 		private double dataToday;
 		private double dataYesterday;
@@ -110,10 +112,10 @@ namespace Covid19Dashboard.Components
 			TotalDays += 1;
 			_chartConfig.Options.Title.Text = $" - {TotalDays} Tage - ";
 			showTrend = ShowTrendNumber || ShowTrendIcon;
-			dataToday = Math.Round(Data[Data.Count - 1].YValue, 1);
+			dataToday = Math.Round(Data[^1].YValue, 1);
 			if (Data.Count > 1)
 			{
-				dataYesterday = Math.Round(Data[Data.Count - 2].YValue, 1);
+				dataYesterday = Math.Round(Data[^2].YValue, 1);
 			}
 			else
 			{

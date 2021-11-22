@@ -1,11 +1,11 @@
 ﻿<MatRipple Color="@MatRippleColor.Secondary">
 	<table class="last-table">
 		<tr>
-			<th>Fälle/100k Einwohner</th>
+			<th>Hospitaliserungen (letzte 7 Tage)</th>
 			<th>Tote (Gesamt)</th>
 		</tr>
 		<tr>
-			<td>@Math.Round(Data.CasesPer100k, 1)</td>
+			<td>@HospitalizationData.Hospitalization7TCases</td>
 			<td>@Data.TotalDeath</td>
 		</tr>
 
@@ -22,4 +22,5 @@
 
 @code {
 	[Parameter] public ICovid19Data Data { get; set; } = default!;
+	[Parameter] public HospitalizationData HospitalizationData { get; set; } = default!;
 }

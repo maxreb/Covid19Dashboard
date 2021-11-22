@@ -38,13 +38,19 @@
 							 })>
 		</RippleLineChartText>
 		<RippleLineChartText Data="DataTotal"
-							 ShowTrendNumber="true"
-							 Title="Fälle gesamt"
-							 TextStyle="font-size: 80px; font-weight: 600; color: #bbb;">
+		                     ShowTrendNumber="true"
+		                     Title="Hospitalisierungsinzidenz (Bundesland)"
+							 InfoTooltip="@HospInfoTooltipString"
+							 TextStyle="@TextStyleHosp"
+							 Thresholds=@(new LineChartThresholds[]{
+                             								 new(3, RkiColorFromValue(35)),
+                             								 new(6, RkiColorFromValue(50)),
+                             								 new(9, RkiColorFromValue(500))
+                             							 })>
 		</RippleLineChartText>
 
 
-		<RKIDetailDataTable Data="@DatasetCurrent"></RKIDetailDataTable>
+		<RKIDetailDataTable Data="@DatasetCurrent" HospitalizationData="HospitalizationDatasetCurrent"></RKIDetailDataTable>
 	}
 	else
 	{

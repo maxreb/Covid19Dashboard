@@ -7,8 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Reble.RKIWebService;
-using RKIWebService.Services;
-using RKIWebService.Services.Arcgis;
+using Reble.RKIWebService.Services;
+using Reble.RKIWebService.Services.Arcgis;
 
 namespace Covid19Dashboard
 {
