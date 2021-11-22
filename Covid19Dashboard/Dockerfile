@@ -7,7 +7,7 @@ EXPOSE 80
 # Enable this to copy the json data files to the build
 # COPY ["Covid19Dashboard/data/", "/app/data/"]
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["Covid19Dashboard/Covid19Dashboard/Covid19Dashboard.csproj", "Covid19Dashboard/Covid19Dashboard/"]
 RUN dotnet restore "Covid19Dashboard/Covid19Dashboard/Covid19Dashboard.csproj"
