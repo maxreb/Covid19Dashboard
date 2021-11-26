@@ -1,29 +1,32 @@
-﻿
-<MatThemeProvider Theme="@theme1">
-	<MatToastContainer />
-	<MatPortalHost />
-	<Router AppAssembly="@typeof(Program).Assembly">
-		<Found Context="routeData">
-			<RouteView RouteData="@routeData" />
-		</Found>
-		<NotFound>
-			<h1>Vier-Null-Vier</h1>
-			<p>Ups! Hier gibt' nichts zu sehen...</p>
-			<Covid19Dashboard.Components.HelpText></Covid19Dashboard.Components.HelpText>
-		</NotFound>
-	</Router>
+﻿<MatThemeProvider Theme="@theme1">
+    <MatToastContainer/>
+    <MatPortalHost/>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView >
+                <h1>Vier-Null-Vier</h1>
+                <p>Ups! Hier gibt' nichts zu sehen...</p>
+                <Covid19Dashboard.Components.HelpText></Covid19Dashboard.Components.HelpText>
+            </LayoutView>
+        </NotFound>
+    </Router>
 </MatThemeProvider>
 
 @code
-        {
+{
 
-	MatTheme theme1 = new MatTheme()
-	{
-		Primary = MatThemeColors.Orange._500.Value,
-		Secondary = MatThemeColors.Orange._500.Value,
-		Background = "#1D2224",
-		Surface = "#fffaf0"
-	};
+    MatTheme theme1 = new MatTheme()
+    {
+        Primary = MatThemeColors.Orange._500.Value,
+        Secondary = MatThemeColors.Orange._500.Value,
+        Background = "#1D2224",
+        Surface = "#fffaf0"
+    };
 
 
 }

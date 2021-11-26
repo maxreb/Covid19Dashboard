@@ -1,4 +1,4 @@
-﻿@using Covid19Dashboard.Components
+@using Covid19Dashboard.Components
 @page "/"
 @page "/{city}"
 
@@ -65,6 +65,6 @@
 		<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
 	</form>
 	Stand: @(DatasetCurrent?.LastUpdate.ToString("dd.MM.yyyy HH:mm") ?? "-")<br />
-	Daten: <a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
-	(c) 2020 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysUniqueViews() / @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
+	<a href="https://npgeo-corona-npgeo-de.hub.arcgis.com/" target="_blank">Robert Koch-Institut (RKI), dl-de/by-2-0</a><br />
+	(c) 2020-2021 <a href="mailto:webmaster@reble.eu" target="_blank">Max Reble</a> @ViewCounterService.GetTodaysUniqueViews() / @ViewCounterService.GetTodaysViews() / @ViewCounterService.GetTotalViews()
 </div>

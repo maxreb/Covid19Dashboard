@@ -1,20 +1,20 @@
-﻿using ChartJs.Blazor.ChartJS.Common.Time;
-using ChartJs.Blazor.ChartJS.LineChart;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using ChartJs.Blazor.Common.Time;
+using ChartJs.Blazor.LineChart;
 
 namespace Covid19Dashboard.Entities
 {
 	public record LineChartThresholds(double Threshold, string ColorHex, int[]? Borderdash = null)
 	{
 		private static readonly int[] defaultBorderdash = new int[] { 10, 5 };
-		private LineDataset<TimeTuple<double>>? thrData;
+		private LineDataset<TimePoint>? thrData;
 
 
-		internal LineDataset<TimeTuple<double>> GetDatasetFromExistingTimeTuples(IEnumerable<TimeTuple<double>> data)
+		internal LineDataset<TimePoint> GetDatasetFromExistingTimeTuples(ICollection<TimePoint> data)
 		{
-			var t = data.Select(x => new TimeTuple<double>(x.Time, Threshold));
-			thrData = new LineDataset<TimeTuple<double>>(t)
+			var t = new List<TimePoint>() { new(data.First().Time, Threshold), new(data.Last().Time, Threshold) };
+			thrData = new LineDataset<TimePoint>(t)
 			{
 				BorderDash = Borderdash ?? defaultBorderdash,
 				BorderColor = ColorHex,

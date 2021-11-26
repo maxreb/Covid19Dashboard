@@ -69,7 +69,9 @@ Bleibt Gesund!",
 				DateUTC = DateUTCParser("22.11.2021"),
 				Text = @"Dieses Update bringt die Hospitalisierungsinzidenz!
 
-Die MPK hat einen neuen Richtwert für die COVID-19 Politik gesetzt: Die Hospitalisierungsinzidenz wird vom RKI nur pro Bundesland berechnet, wird hier also auch nur pro Bundesland angezeigt.
+Die MPK hat einen neuen Richtwert für die COVID-19 Politik gesetzt: Die Hospitalisierungsinzidenz wird vom RKI nur pro Bundesland berechnet, wird hier also auch nur pro Bundesland angezeigt. 
+
+Außerdem habe ich die App auf das neuste Framework aktualisiert, dadurch sollte alles etwas flüssiger laufen (und deswegen siehst du diese Benachrichtigung auch ggf. ein zweites Mal).
 
 Auf dem kleinen I neben dem Wert könnt ihr euch die Gesetzlage (natürlich sehr verkürzt) ansehen. 
 Weitere Infos gibt es hier: ",

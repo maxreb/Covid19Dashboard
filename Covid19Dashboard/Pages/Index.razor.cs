@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using ChartJs.Blazor.ChartJS.Common.Time;
 using Covid19Dashboard.Components;
 using Covid19Dashboard.Entities;
 using Covid19Dashboard.Services;
@@ -9,13 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Reble.RKIWebService.Entities;
 using Reble.RKIWebService.Services;
-using Reble.RKIWebService.Services.Arcgis;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Reble.RKIWebService.Services;
+using ChartJs.Blazor.Common.Time;
 
 namespace Covid19Dashboard.Pages
 {
@@ -33,8 +26,8 @@ namespace Covid19Dashboard.Pages
 		[Parameter] public string? City { get; set; }
 		public string? lastCity;
 
-		private List<TimeTuple<double>> Data7 { get; } = new List<TimeTuple<double>>();
-		private List<TimeTuple<double>> DataTotal { get; } = new List<TimeTuple<double>>();
+		private List<TimePoint> Data7 { get; } = new List<TimePoint>();
+		private List<TimePoint> DataTotal { get; } = new List<TimePoint>();
 		private bool ShowAllData { get; set; }
 		private string TextStyle7 => "font-size: 120px; font-weight: 800; color: " + colorRki;
 		private string TextStyleHosp => "font-size: 120px; font-weight: 800; color: " + colorRkiHosp;
@@ -97,8 +90,6 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 				City = "Kiel";
-			else
-				City = City.Replace('_', ' ');
 			Update();
 		}
 
@@ -129,12 +120,7 @@ namespace Covid19Dashboard.Pages
 		private void SwitchToState() => ShowStateData = true;
 		private void SwitchToCounty() => ShowStateData = false;
 
-		private static string GetUriFromCity(string city)
-		{
-			city = city.Replace(' ',
-				'_'); //We need to do this as %20 chars are not allowed yet, see https://github.com/dotnet/aspnetcore/pull/26769
-			return $"/{Uri.EscapeUriString(city)}";
-		}
+		private static string GetUriFromCity(string city) => "/" + city;
 
 		private void Update()
 		{
@@ -192,15 +178,16 @@ namespace Covid19Dashboard.Pages
 
 
 				var currentDate = DatasetCurrent.LastUpdate.Date;
+				HospitalizationService.TaskCompletionSource.Task.Wait();
 				var hospitalizationData = HospitalizationService.GetStateRecordsByCityKey(cityKey, from);
 				var hospitalizationList = hospitalizationData.ToList();
 				HospitalizationDatasetCurrent = hospitalizationList.Last();
 
 
 				DataUpToDate = DateTime.Now.AddHours(-5).Date <= currentDate;
-				Data7.AddRange(covid19Data.Select(x => new TimeTuple<double>(new Moment(x.LastUpdate), x.Cases7Per100k)));
+				Data7.AddRange(covid19Data.Select(x => new TimePoint(x.LastUpdate, x.Cases7Per100k)));
 				DataTotal.AddRange(hospitalizationList.Select(x =>
-					new TimeTuple<double>(new Moment(x.Date), x.Hospitalization7TIncidence)));
+					new TimePoint(x.Date, x.Hospitalization7TIncidence)));
 				colorRki = RkiColorFromValue(DatasetCurrent.Cases7Per100k);
 				colorRkiHosp = HospitalizationDatasetCurrent.Hospitalization7TIncidence switch
 				{

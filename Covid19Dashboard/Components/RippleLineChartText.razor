@@ -1,4 +1,4 @@
-﻿@using ChartJs.Blazor.Charts
+﻿@using ChartJs.Blazor
 <div class="rlct-container">
 
     <p class="@TitleClass">@Title</p>
@@ -14,17 +14,17 @@
     }
 
     <MatRipple Color="@MatRippleColor.Secondary" @onclick="ToggleGraphView">
-        <ChartJsLineChart Config="@_chartConfig" Height="180"></ChartJsLineChart>
+        
         <div class="@TextClasses">
-            @if (showTrend)
+            @if (_showTrend)
             {
                 <div style="width:100%"></div>
             }
-            <p style="@TextStyle">@dataToday.ToString(System.Globalization.CultureInfo.InvariantCulture)</p>
-            @if (showTrend)
+            <p style="@TextStyle">@_dataToday.ToString(System.Globalization.CultureInfo.InvariantCulture)</p>
+            @if (_showTrend)
             {
-                var x = GetIconAndStyle(dataToday, dataYesterday);
-                var tooltip = "Gestern: " + dataYesterday;
+                var x = GetIconAndStyle(_dataToday, _dataYesterday);
+                var tooltip = "Gestern: " + _dataYesterday;
                 <MatTooltip Tooltip=@tooltip>
                     @if (ShowTrendIcon)
                     {
@@ -35,12 +35,16 @@
                         <p class="foreground"
                            @ref="@context.Current"
                            style="color: #ff9800">
-                            @(dataToday > dataYesterday ? "+" : "") @(Math.Round(dataToday - dataYesterday, 1))
+                            @(_dataToday > _dataYesterday ? "+" : "") @(Math.Round(_dataToday - _dataYesterday, 1))
                         </p>
                     }
 
                 </MatTooltip>
             }
         </div>
+        
+        <div class="rlct-chart">
+                <Chart Config="@_chartConfig" Height="138"></Chart>
+                </div>
     </MatRipple>
 </div>

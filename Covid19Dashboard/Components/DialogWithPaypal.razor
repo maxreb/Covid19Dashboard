@@ -38,11 +38,11 @@
 				<MatButton Type="submit">Unterstützen</MatButton>
 				<img alt="" border="0" src="https://www.paypal.com/de_DE/i/scr/pixel.gif" width="1" height="1" />
 			</form>
-			<MatButton Id="focus-button" OnClick="@(_ => CloseDialog())">Vielleicht Später</MatButton>
+			<MatButton Id="focus-button" OnClick="CloseDialog">Vielleicht Später</MatButton>
 		}
 		else
 		{
-			<MatButton Id="focus-button" Raised="true" OnClick="@(_ => CloseDialog())">All rigthy</MatButton>
+			<MatButton Id="focus-button" Raised="true" OnClick="CloseDialog">All rigthy</MatButton>
 		}
 	</MatDialogActions>
 
@@ -54,9 +54,9 @@
 	public Campaign? Campaign { get; set; }
 
 	[CascadingParameter]
-	public MatDialogReference DialogReference { get; set; }
+	public MatDialogReference DialogReference { get; set; } = default!;
 
-	async Task CloseDialog()
+	void CloseDialog()
 	{
 		DialogReference.Close(null);
 	}

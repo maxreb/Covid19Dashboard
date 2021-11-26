@@ -2,65 +2,7 @@
 @namespace Covid19Dashboard.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-	Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Max Rebles Covid19 Dashboard</title>
-	<base href="~/" />
-	<link href="/css/site.css" rel="stylesheet" />
-
-
-	<link rel="manifest" href="manifest.json" />
-
-	<script src="_content/MatBlazor/dist/matBlazor.js"></script>
-	<link href="_content/MatBlazor/dist/matBlazor.css" rel="stylesheet" />
-	<link href="Covid19Dashboard.styles.css" rel="stylesheet" />
-
-</head>
-<body>
-	<app>
-		<component type="typeof(App)" render-mode="Server" />
-	</app>
-
-	<div id="blazor-error-ui">
-		<environment include="Staging,Production">
-			An error has occurred. This application may no longer respond until reloaded.
-		</environment>
-		<environment include="Development">
-			An unhandled exception has occurred. See browser dev tools for details.
-		</environment>
-		<a href="" class="reload">Reload</a>
-		<a class="dismiss">🗙</a>
-	</div>
-
-	<script type="text/javascript">
-		window.workaroundJs = {
-			focusElement: function (id) {
-				const element = document.getElementById(id); 
-				element.focus();
-			}
-		}
-	</script>
-
-	<script type="module" src="~/pwabuilder-sw-register.js"></script>
-
-	<script src="_framework/blazor.server.js"></script>
-
-	<!-- Reference the included moment.js javascript file. -->
-	<script src="_content/ChartJs.Blazor/moment-with-locales.min.js" type="text/javascript" language="javascript"></script>
-
-	<!-- Reference the included ChartJs javascript file. -->
-	<script src="_content/ChartJs.Blazor/Chart.min.js" type="text/javascript" language="javascript"></script>
-
-	<!-- This is the glue between the C# code and the ChartJs charts -->
-	<script src="_content/ChartJs.Blazor/ChartJsBlazorInterop.js" type="text/javascript" language="javascript"></script>
-
-	<!-- Some styling -->
-	<link rel="stylesheet" href="_content/ChartJs.Blazor/ChartJSBlazor.css" />
-</body>
-</html>
+<component type="typeof(App)" render-mode="Server" />
