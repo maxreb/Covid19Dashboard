@@ -12,12 +12,12 @@ Example: https://covid19.reble.eu/Hamburg
 # Installation
 This works for Linux and for Windows
 
-You need: git, .net core 5.0
+You need: git, .net 6.0
 
 ```
 git clone https://github.com/maxreb/Covid19Dashboard
 git clone https://github.com/maxreb/RKIWebService
-cd Covid19Dashboard
-dotnet run --project Covid19Dashboard/Covid19Dashboard.csproj
+cd Covid19Dashboard/Covid19Dashboard
+dotnet run 
 ```
-And then open your Browser and browse to http://localhost:5000
+And then open your Browser and browse to https://localhost:7086/
