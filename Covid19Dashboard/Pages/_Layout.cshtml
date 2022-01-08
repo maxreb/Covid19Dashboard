@@ -35,22 +35,30 @@
     <a class="dismiss">🗙</a>
 </div>
 
-
-<script type="text/javascript">
-		window.workaroundJs = {
-			focusElement: function (id) {
-				const element = document.getElementById(id); 
-				element.focus();
-			}
-		}
-	</script>
-
-<script src="_framework/blazor.server.js"></script>
+<script src="_framework/blazor.server.js" autostart="false"></script>
+<script>
+   Blazor.start().then(() => {
+       Blazor.defaultReconnectionHandler._reconnectionDisplay = {
+           show: () => {},
+           update: (d) => {},
+           rejected: (d) => document.location.reload()
+       };
+   });//super hacky...
+   
+   window.workaroundJs = {
+   			focusElement: function (id) {
+   				const element = document.getElementById(id); 
+   				element.focus();
+   			}
+   		}
+</script>
 
 <script src="~/js/moment.2.29.1.min.js"></script>
 <script src="~/js/Chart.2.9.4.min.js"></script>
 <!-- This is the glue between Blazor and Chart.js -->
 <script src="_content/ChartJs.Blazor.Fork/ChartJsBlazorInterop.js"></script>
+
+
 
 </body>
 </html>

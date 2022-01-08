@@ -90,6 +90,8 @@ namespace Covid19Dashboard.Pages
 		{
 			if (string.IsNullOrEmpty(City))
 				City = "Kiel";
+			else
+				City = City.Replace('_', ' ');//To keep downwards compatibility
 			Update();
 		}
 
