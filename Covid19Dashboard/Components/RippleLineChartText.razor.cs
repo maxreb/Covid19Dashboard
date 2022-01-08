@@ -108,7 +108,14 @@ namespace Covid19Dashboard.Components
 			TotalDays += 1;
 			_chartConfig.Options.Title.Text = $" - {TotalDays} Tage - ";
 			_showTrend = ShowTrendNumber || ShowTrendIcon;
-			_dataToday = Math.Round(data[^1].Y, (data[^1].Y > 100) ? 1 : 2);
+			_dataToday = data[^1].Y;
+			var roundNumbers =
+				_dataToday < 1000
+					? (int)Math.Ceiling(3 - Math.Log10(_dataToday))
+					: 0; //1000 -> 0, 100 -> 1, 10 -> 2
+			_dataToday = Math.Round(_dataToday, roundNumbers);
+
+
 			if (data.Count > 1)
 			{
 				_dataYesterday = Math.Round(data[^2].Y, (data[^1].Y > 100) ? 1 : 2);
