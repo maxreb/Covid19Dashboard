@@ -113,6 +113,8 @@ namespace Covid19Dashboard.Pages
 		private const string? HospInfoTooltipString =
 			"Die Hospitalisierungsinzidenz weist die hospitalisierten COVID-19-Fälle unter den in den letzten 7 Tagen gemeldeten Fällen bezogen auf 100.000 Menschen im jeweiligen Bundesland aus.\n" +
 			"\n" +
+			"Außerdem werden auch die in der Vergangenheit liegende Werte vom RKI täglich nachgereicht, weswegen der Graph für die letzten 7 Tage nicht sonderlich aussagekräftig ist.\n" +
+			"\n" +
 			"ab einem Wert von 3 --> 2G\n" +
 			"ab einem Wert von 6 --> 2G+\n" +
 			"ab einem Wert von 9 --> zusätzliche Maßnahmen je Land";
