@@ -38,6 +38,12 @@
 <script src="_framework/blazor.server.js" autostart="false"></script>
 <script>
    Blazor.start().then(() => {
+       window.addEventListener('unhandledrejection', function (evt) {
+           if (evt.reason.message === "Cannot send data if the connection is not in the 'Connected' State."){
+               document.location.reload();
+               evt.preventDefault();
+           }           
+       });
        Blazor.defaultReconnectionHandler._reconnectionDisplay = {
            show: () => {},
            update: (d) => {},
