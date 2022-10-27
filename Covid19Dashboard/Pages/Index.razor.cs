@@ -189,7 +189,7 @@ namespace Covid19Dashboard.Pages
 
 
 				DataUpToDate = DateTime.Now.AddHours(-5).Date <= currentDate;
-				Data7.AddRange(covid19Data.Select(x => new TimePoint(x.LastUpdate, x.Cases7Per100k)));
+				Data7.AddRange(covid19Data.Select(x => new TimePoint(x.LastUpdate, Math.Round(x.Cases7Per100k,2))));
 				DataTotal.AddRange(hospitalizationList.Select(x =>
 					new TimePoint(x.Date, x.Hospitalization7TIncidence)));
 				colorRki = RkiColorFromValue(DatasetCurrent.Cases7Per100k);
