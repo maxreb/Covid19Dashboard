@@ -102,7 +102,17 @@ namespace Covid19Dashboard.Components
 				throw new ArgumentException($"You have to choose between {nameof(ShowTrendIcon)} and {nameof(ShowTrendNumber)}");
 
 			//If the data has more then 200 entries, downsample it
-			var data = Lttb.LargestTriangleThreeBuckets(Data, 200).ToList();
+			var data = Data;
+			if (data.Count > 200)
+			{
+				data = Lttb.LargestTriangleThreeBuckets(Data, 200).ToList();
+				_xAxis.Time.Min = new DateTime(2020, 03, 01);
+			}
+			else
+			{
+				_xAxis.Time.Min = Data.First().Time;
+			}
+
 
 			TotalDays = (int)(data.First().Time - DateTime.Now).TotalDays * -1;
 			TotalDays += 1;
@@ -186,6 +196,7 @@ namespace Covid19Dashboard.Components
 						{
 							new TimeAxis
 							{
+								Time = new TimeOptions(),
 								Display = AxisDisplay.False,
 								GridLines = new GridLines
 								{
